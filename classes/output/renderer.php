@@ -17,21 +17,18 @@
 /**
  * Plugin version and other meta-data are defined here.
  *
- * @package     local_learningplan
- * @copyright   2024 Ivonne Kneißig <kneissig.ivonne@fh-swf.de>
+ * @package     local_greetings
+ * @copyright   2024 Ivonne Moritz  <moritz.ivonne@fh-swf.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once('../../config.php');
-require_once($CFG->dirroot . '/local/learningplan/lib.php');
-$context = context_system::instance();
-$PAGE->set_context($context);
-$PAGE->set_url(new moodle_url('/local/learningplan/index.php'));
-$PAGE->set_pagelayout('standard');
-$PAGE->set_title(get_string('pluginname', 'local_learningplan'));
-$PAGE->set_heading(get_string('pluginname', 'local_learningplan'));
 
-$output = $PAGE->get_renderer('local_learningplan');
-echo $output->header();
-$renderable = new local_learningplan\output\index_page();
-echo $output->render($renderable);
-echo $output->footer();
+namespace local_learningplan\output;
+
+use plugin_renderer_base;
+
+class renderer extends plugin_renderer_base {
+    public function render_index_page($page): string {
+        $data = $page->export_for_template($this);
+        return parent::render_from_template('local_learningplan/index', $data);
+    }
+}
