@@ -39,6 +39,9 @@ function local_learningplan_extend_navigation_frontpage(navigation_node $frontpa
 
 function local_learningplan_extend_navigation(global_navigation $navigation) {
     global $PAGE;
-    $PAGE->requires->js_call_amd('local_learningplan/button', 'init');
+    global $USER;
+    $PAGE->requires->js_call_amd('local_learningplan/button', 'init', ['userid' => $USER->id]);
 }
+
+
 
