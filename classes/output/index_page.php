@@ -28,6 +28,31 @@ use renderer_base;
 
 class index_page implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
-        return []; // Falls du später Daten brauchst, hier ein Array zurückgeben
+        global $DB, $USER;
+
+        try {
+            $sections = $DB->get_records('local_learningplan', ['user' => $USER->id]);
+
+            $data = [];
+            foreach ($sections as $section) {
+                $course = $DB->get_record('course', ['id' => $section->course]);
+                $sectionname = "Abschnitt {$section->section}"; // Oder spezifischer Name aus DB holen
+
+                $data[] = [
+                    'coursename' => $course->fullname,
+                    'courseid' => $section->course,
+                    'sectionid' => $section->section,
+                    'sectionname' => $sectionname,
+                    'addeddate' => date('d.m.Y', $section->timecreated),
+                    'processing_deadline' => date('d.m.Y', $section->processing_deadline), // Falls als Timestamp gespeichert
+                    'progress' => $section->state,
+                ];
+            }
+
+            return ['sections' => $data];
+        } catch (dml_exception $e) {
+            return ['sections' => []];
+        }
     }
 }
+

@@ -30,6 +30,8 @@ $PAGE->set_pagelayout('standard');
 $PAGE->set_title(get_string('pluginname', 'local_learningplan'));
 $PAGE->set_heading(get_string('pluginname', 'local_learningplan'));
 
+$PAGE->requires->js_call_amd('local_learningplan/learningplan', 'init');
+
 $output = $PAGE->get_renderer('local_learningplan');
 echo $output->header();
 $renderable = new local_learningplan\output\index_page();

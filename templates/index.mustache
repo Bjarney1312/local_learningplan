@@ -24,17 +24,28 @@
             <th>Kurs</th>
             <th>Abschnitt</th>
             <th>Hinzugefügt am</th>
-            <th>Bearbeitungs</th>
+            <th>Bearbeitung bis</th>
             <th>Bearbeitungsstand</th>
             <th>Entfernen</th>
         </tr>
-        <tr>
-            <td>Test</td>
-            <td>Test</td>
-            <td>Test</td>
-            <td>Test</td>
-            <td>Test</td>
-            <td>Test</td>
-        </tr>
+        {{#sections}}
+            <tr>
+                <td>{{coursename}}</td>
+                <td>{{sectionname}}</td>
+                <td>{{addeddate}}</td>
+                <td>{{processing_deadline}}</td>
+                <td>{{progress}}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm remove-section-btn" data-courseid="{{courseid}}" data-sectionid="{{sectionid}}">
+                        <i class="fa fa-trash"></i> Entfernen
+                    </button>
+                </td>
+            </tr>
+        {{/sections}}
+        {{^sections}}
+            <tr>
+                <td colspan="6" class="text-center">Du hast noch keine gespeicherten Lernbereiche.</td>
+            </tr>
+        {{/sections}}
     </table>
 </div>
