@@ -25,6 +25,8 @@ namespace local_learningplan\output;
 use renderable;
 use templatable;
 use renderer_base;
+use dml_exception;
+use moodle_url;
 
 class index_page implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
@@ -36,15 +38,30 @@ class index_page implements renderable, templatable {
             $data = [];
             foreach ($sections as $section) {
                 $course = $DB->get_record('course', ['id' => $section->course]);
-                $sectionname = "Abschnitt {$section->section}"; // Oder spezifischer Name aus DB holen
+                $course_section = $DB->get_record('course_sections', ['section' => $section->section, 'course' => $section->course]);
+
+                $sectionname = !empty($course_section->name) ? $course_section->name : get_section_name($course_section->course, $course_section);
+
+                // URL zum Kurs
+                $course_url = new moodle_url('/course/view.php', ['id' => $section->course]);
+
+                // URL zum Abschnitt innerhalb des Kurses
+                $section_url = new moodle_url('/course/view.php', [
+                    'id' => $section->course,
+                    'section' => $section->section
+                ]);
+
 
                 $data[] = [
+                    'userid' => $USER->id,
                     'coursename' => $course->fullname,
                     'courseid' => $section->course,
+                    'courseurl' => $course_url->out(false),  // URL zum Kurs
                     'sectionid' => $section->section,
                     'sectionname' => $sectionname,
+                    'sectionurl' => $section_url->out(false), // URL zum Abschnitt
                     'addeddate' => date('d.m.Y', $section->timecreated),
-                    'processing_deadline' => date('d.m.Y', $section->processing_deadline), // Falls als Timestamp gespeichert
+                    'processing_deadline' => !empty($section->processing_deadline) ? date('d.m.Y', $section->processing_deadline) : '-',
                     'progress' => $section->state,
                 ];
             }

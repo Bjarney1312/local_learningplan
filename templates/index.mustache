@@ -29,14 +29,14 @@
             <th>Entfernen</th>
         </tr>
         {{#sections}}
-            <tr>
-                <td>{{coursename}}</td>
-                <td>{{sectionname}}</td>
+            <tr class="learningplan-section" data-sectionid="{{sectionid}}">
+                <td><a href="{{courseurl}}" target="_blank">{{coursename}}</a></td>
+                <td><a href="{{sectionurl}}" target="_blank">{{sectionname}}</a></td>
                 <td>{{addeddate}}</td>
                 <td>{{processing_deadline}}</td>
                 <td>{{progress}}</td>
                 <td>
-                    <button class="btn btn-danger btn-sm remove-section-btn" data-courseid="{{courseid}}" data-sectionid="{{sectionid}}">
+                    <button class="btn btn-danger btn-sm remove-section-btn" data-courseid="{{courseid}}" data-sectionid="{{sectionid}}" data-userid="{{userid}}">
                         <i class="fa fa-trash"></i> Entfernen
                     </button>
                 </td>

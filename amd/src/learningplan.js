@@ -3,9 +3,9 @@ define(['jquery', 'core/ajax'], function($, ajax) {
         init: function() {
             $(document).on('click', '.remove-section-btn', function() {
                 let button = $(this);
-                let courseId = button.data('course-id');
-                let sectionId = button.data('section-id');
-                let userId = button.data('user-id');
+                let courseId = button.data('courseid');
+                let sectionId = button.data('sectionid');
+                let userId = button.data('userid');
 
                 console.log('Neue Javascript wurde geladen');
 
@@ -18,7 +18,8 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     },
                     done: function() {
                         console.log('Section aus Datenbank gelöscht');
-                        button.closest('.learningplan-section').fadeOut(300, function() {
+                        // Die gesamte Tabellenzeile entfernen
+                        $('tr[data-sectionid="' + sectionId + '"]').fadeOut(300, function() {
                             $(this).remove();
                         });
                     },
