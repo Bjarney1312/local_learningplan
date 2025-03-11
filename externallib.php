@@ -90,4 +90,49 @@ class learningplan_service extends external_api {
     public static function delete_section_data_returns() {
         return new external_value(PARAM_TEXT, 'Status message');
     }
+
+    // Hier Datepicker
+    public static function update_deadline($courseid, $sectionid, $userid, $deadline) {
+        global $DB;
+
+        // Überprüfe die Parameter
+        $params = self::validate_parameters(self::update_deadline_parameters(), [
+            'courseid' => $courseid,
+            'sectionid' => $sectionid,
+            'userid' => $userid,
+            'deadline' => $deadline
+        ]);
+
+        // Stelle sicher, dass der Datensatz existiert
+        $record = $DB->get_record('local_learningplan', [
+            'course' => $params['courseid'],
+            'section' => $params['sectionid'],
+            'user' => $params['userid']
+        ]);
+
+        if (!$record) {
+            throw new moodle_exception('Eintrag nicht gefunden');
+        }
+
+        // Konvertiere das Datum (YYYY-MM-DD) in Unix-Timestamp
+        $record->processing_deadline = strtotime($params['deadline']);
+
+        // Aktualisiere den Datensatz
+        $DB->update_record('local_learningplan', $record);
+
+        return true;
+    }
+
+    public static function update_deadline_parameters() {
+        return new external_function_parameters([
+            'courseid' => new external_value(PARAM_INT, 'Die Kurs-ID'),
+            'sectionid' => new external_value(PARAM_INT, 'Die Abschnitts-ID'),
+            'userid' => new external_value(PARAM_INT, 'Die Benutzer-ID'),
+            'deadline' => new external_value(PARAM_RAW, 'Das neue Datum im Format YYYY-MM-DD')
+        ]);
+    }
+
+    public static function update_deadline_returns() {
+        return new external_value(PARAM_BOOL, 'Gibt zurück, ob das Speichern erfolgreich war');
+    }
 }

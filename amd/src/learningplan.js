@@ -1,5 +1,5 @@
 define(['jquery', 'core/ajax'], function($, ajax) {
-    return {
+ return {
         init: function() {
             $(document).on('click', '.remove-section-btn', function() {
                 let button = $(this);
@@ -28,6 +28,44 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     }
                 }]);
             });
+
+            console.log('Datepicker wird initialisiert');
+
+            /**
+             * DATEPICKER INITIALISIEREN
+             */
+// Event Listener für das Ändern des Datums
+            $(document).ready(function() {
+                // Event Listener für das Ändern des Datums
+                $('.datepicker').on('change', function() {
+                    let input = $(this);
+                    let courseId = input.data('courseid');
+                    let sectionId = input.data('sectionid');
+                    let userId = input.data('userid');
+                    let newDeadline = input.val(); // Holt das Datum im YYYY-MM-DD Format
+
+                    console.log('Neues Datum gewählt:', newDeadline);
+
+                    // AJAX-Request zum Speichern des neuen Datums
+                    ajax.call([{
+                        methodname: 'local_learningplan_update_deadline',
+                        args: {
+                            courseid: courseId,
+                            sectionid: sectionId,
+                            userid: userId,
+                            deadline: newDeadline
+                        },
+                        done: function() {
+                            console.log('Deadline erfolgreich gespeichert!');
+                        },
+                        fail: function(error) {
+                            console.error('Fehler beim Speichern der Deadline:', error);
+                        }
+                    }]);
+                });
+            });
+
+
         }
     };
 });

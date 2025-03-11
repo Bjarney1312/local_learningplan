@@ -61,7 +61,8 @@ class index_page implements renderable, templatable {
                     'sectionname' => $sectionname,
                     'sectionurl' => $section_url->out(false), // URL zum Abschnitt
                     'addeddate' => date('d.m.Y', $section->timecreated),
-                    'processing_deadline' => !empty($section->processing_deadline) ? date('d.m.Y', $section->processing_deadline) : '-',
+                    //'processing_deadline' => !empty($section->processing_deadline) ? date('d.m.Y', $section->processing_deadline) : '-',
+                    'processing_deadline' => !empty($section->processing_deadline) ? date('Y-m-d', $section->processing_deadline) : '',
                     'progress' => $section->state,
                 ];
             }
