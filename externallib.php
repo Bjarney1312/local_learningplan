@@ -135,4 +135,48 @@ class learningplan_service extends external_api {
     public static function update_deadline_returns() {
         return new external_value(PARAM_BOOL, 'Gibt zurück, ob das Speichern erfolgreich war');
     }
+
+
+
+    public static function update_progress($courseid, $sectionid, $userid, $progress) {
+        global $DB;
+
+        // Parameter validieren
+        $params = self::validate_parameters(self::update_progress_parameters(), [
+            'courseid' => $courseid,
+            'sectionid' => $sectionid,
+            'userid' => $userid,
+            'progress' => $progress
+        ]);
+
+        // Prüfen, ob der Eintrag existiert
+        $record = $DB->get_record('local_learningplan', [
+            'course' => $params['courseid'],
+            'section' => $params['sectionid'],
+            'user' => $params['userid']
+        ]);
+
+        if (!$record) {
+            throw new moodle_exception('Eintrag nicht gefunden');
+        }
+
+        // Fortschritt aktualisieren
+        $record->state = $params['progress'];
+        $DB->update_record('local_learningplan', $record);
+
+        return true;
+    }
+
+    public static function update_progress_parameters() {
+        return new external_function_parameters([
+            'courseid' => new external_value(PARAM_INT, 'Die Kurs-ID'),
+            'sectionid' => new external_value(PARAM_INT, 'Die Abschnitts-ID'),
+            'userid' => new external_value(PARAM_INT, 'Die Benutzer-ID'),
+            'progress' => new external_value(PARAM_ALPHANUMEXT, 'Der neue Fortschritt (offen, in_bearbeitung, abgeschlossen)')
+        ]);
+    }
+
+    public static function update_progress_returns() {
+        return new external_value(PARAM_BOOL, 'Gibt zurück, ob das Speichern erfolgreich war');
+    }
 }

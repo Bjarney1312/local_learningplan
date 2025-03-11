@@ -52,19 +52,26 @@ class index_page implements renderable, templatable {
                 ]);
 
 
+                $progress_offen = ($section->state == 'offen') ? true : false;
+                $progress_in_bearbeitung = ($section->state == 'in_bearbeitung') ? true : false;
+                $progress_abgeschlossen = ($section->state == 'abgeschlossen') ? true : false;
+
                 $data[] = [
                     'userid' => $USER->id,
                     'coursename' => $course->fullname,
                     'courseid' => $section->course,
-                    'courseurl' => $course_url->out(false),  // URL zum Kurs
+                    'courseurl' => $course_url->out(false),
                     'sectionid' => $section->section,
                     'sectionname' => $sectionname,
-                    'sectionurl' => $section_url->out(false), // URL zum Abschnitt
+                    'sectionurl' => $section_url->out(false),
                     'addeddate' => date('d.m.Y', $section->timecreated),
-                    //'processing_deadline' => !empty($section->processing_deadline) ? date('d.m.Y', $section->processing_deadline) : '-',
                     'processing_deadline' => !empty($section->processing_deadline) ? date('Y-m-d', $section->processing_deadline) : '',
-                    'progress' => $section->state,
+                    'progress' => $section->state,  // Aktueller Bearbeitungsstand
+                    'progress_offen' => $progress_offen,
+                    'progress_in_bearbeitung' => $progress_in_bearbeitung,
+                    'progress_abgeschlossen' => $progress_abgeschlossen
                 ];
+
             }
 
             return ['sections' => $data];

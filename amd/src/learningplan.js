@@ -66,6 +66,37 @@ define(['jquery', 'core/ajax'], function($, ajax) {
             });
 
 
+            /**
+             * STATUS DROPDOWN
+             */
+
+            $('.progress-dropdown').on('change', function() {
+                let input = $(this);
+                let courseId = input.data('courseid');
+                let sectionId = input.data('sectionid');
+                let userId = input.data('userid');
+                let newProgress = input.val();
+
+                console.log('Neuer Bearbeitungsstand:', newProgress);
+
+                // AJAX-Request zum Speichern des neuen Bearbeitungsstands
+                ajax.call([{
+                    methodname: 'local_learningplan_update_progress',
+                    args: {
+                        courseid: courseId,
+                        sectionid: sectionId,
+                        userid: userId,
+                        progress: newProgress
+                    },
+                    done: function() {
+                        console.log('Bearbeitungsstand erfolgreich gespeichert!');
+                    },
+                    fail: function(error) {
+                        console.error('Fehler beim Speichern des Bearbeitungsstands:', error);
+                    }
+                }]);
+            });
+
         }
     };
 });

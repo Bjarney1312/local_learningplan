@@ -41,7 +41,16 @@
                            data-userid="{{userid}}"
                            value="{{#processing_deadline}}{{processing_deadline}}{{/processing_deadline}}">
                 </td>
-                <td>{{progress}}</td>
+                <td>
+                    <select class="progress-dropdown"
+                            data-courseid="{{courseid}}"
+                            data-sectionid="{{sectionid}}"
+                            data-userid="{{userid}}">
+                        <option value="offen" {{#progress_offen}}selected{{/progress_offen}}>Offen</option>
+                        <option value="in_bearbeitung" {{#progress_in_bearbeitung}}selected{{/progress_in_bearbeitung}}>In Bearbeitung</option>
+                        <option value="abgeschlossen" {{#progress_abgeschlossen}}selected{{/progress_abgeschlossen}}>Abgeschlossen</option>
+                    </select>
+                </td>
                 <td>
                     <button class="btn btn-danger btn-sm remove-section-btn" data-courseid="{{courseid}}" data-sectionid="{{sectionid}}" data-userid="{{userid}}">
                         <i class="fa fa-trash"></i> Entfernen

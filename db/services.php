@@ -21,7 +21,7 @@ $functions = [
         'classname' => 'local_learningplan\external\learningplan_service',
         'methodname' => 'check_section_data',
         'classpath' => 'local/learningplan/externallib.php',
-        'description' => 'Checks if section data already in database',
+        'description' => 'Checks if section data already exists in the database',
         'type' => 'read',
         'ajax' => true
     ],
@@ -29,8 +29,16 @@ $functions = [
         'classname' => 'local_learningplan\external\learningplan_service',
         'methodname' => 'update_deadline',
         'classpath' => 'local/learningplan/externallib.php',
-        'description' => 'Checks if section data already in database',
-        'type' => 'read',
+        'description' => 'Updates the processing deadline for a learning plan entry',
+        'type' => 'write',
+        'ajax' => true
+    ],
+    'local_learningplan_update_progress' => [
+        'classname' => 'local_learningplan\external\learningplan_service',
+        'methodname' => 'update_progress',
+        'classpath' => 'local/learningplan/externallib.php',
+        'description' => 'Updates the completion status for a learning plan entry',
+        'type' => 'write',
         'ajax' => true
     ]
 ];
