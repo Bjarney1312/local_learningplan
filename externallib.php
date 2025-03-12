@@ -179,4 +179,73 @@ class learningplan_service extends external_api {
     public static function update_progress_returns() {
         return new external_value(PARAM_BOOL, 'Gibt zurück, ob das Speichern erfolgreich war');
     }
+
+
+
+
+
+
+    // Menüpunkt für sections
+
+
+    public static function toggle_section_option($sectionid, $courseid) {
+        global $DB;
+
+        self::validate_parameters(self::toggle_section_option_parameters(), [
+            'sectionid' => $sectionid,
+            'courseid' => $courseid
+        ]);
+
+        $record = $DB->get_record('local_learningplan_options', ['section' => $sectionid, 'course' => $courseid]);
+
+        if ($record) {
+            // Toggle zwischen 0 und 1
+            $newvalue = $record->allow_learningplan == 1 ? 0 : 1;
+            $DB->update_record('local_learningplan_options', [
+                'id' => $record->id,
+                'allow_learningplan' => $newvalue
+            ]);
+        } else {
+            // Standardwert: 1 (hinzufügbar)
+            $newvalue = 1;
+            $DB->insert_record('local_learningplan_options', [
+                'section' => $sectionid,
+                'course' => $courseid,
+                'allow_learningplan' => $newvalue
+            ]);
+        }
+
+        return $newvalue;
+    }
+
+    public static function toggle_section_option_parameters() {
+        return new external_function_parameters([
+            'sectionid' => new external_value(PARAM_INT, 'ID des Abschnitts'),
+            'courseid' => new external_value(PARAM_INT, 'ID des Kurses')
+        ]);
+    }
+
+    public static function toggle_section_option_returns() {
+        return new external_value(PARAM_INT, 'Neuer Wert (0 oder 1)');
+    }
+
+    public static function get_section_option($sectionid, $courseid) {
+        global $DB;
+
+        self::validate_parameters(self::toggle_section_option_parameters(), [
+            'sectionid' => $sectionid,
+            'courseid' => $courseid
+        ]);
+
+        $record = $DB->get_record('local_learningplan_options', ['section' => $sectionid, 'course' => $courseid]);
+        return $record ? $record->allow_learningplan : 1; // Standardwert 1, falls nicht vorhanden
+    }
+
+    public static function get_section_option_parameters() {
+        return self::toggle_section_option_parameters();
+    }
+
+    public static function get_section_option_returns() {
+        return new external_value(PARAM_INT, 'Wert (0 oder 1)');
+    }
 }

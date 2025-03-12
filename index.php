@@ -30,6 +30,11 @@ $PAGE->set_pagelayout('standard');
 $PAGE->set_title(get_string('pluginname', 'local_learningplan'));
 $PAGE->set_heading(get_string('pluginname', 'local_learningplan'));
 
+require_login();
+if (isguestuser()) {
+    throw new moodle_exception('noguest');
+}
+
 $PAGE->requires->js_call_amd('local_learningplan/learningplan', 'init');
 
 $output = $PAGE->get_renderer('local_learningplan');

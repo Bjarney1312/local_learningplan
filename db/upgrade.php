@@ -56,6 +56,32 @@ function xmldb_local_learningplan_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2025020413, 'local', 'learningplan');
     }
 
+    if ($oldversion < 2025020467) {
+
+        // Define table local_learningplan_options to be created.
+        $table = new xmldb_table('local_learningplan_options');
+
+        // Adding fields to table local_learningplan_options.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('course', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('section', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('allow_learningplan', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1');
+
+        // Adding keys to table local_learningplan_options.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('fk_course', XMLDB_KEY_FOREIGN, ['course'], 'course', ['id']);
+        $table->add_key('section', XMLDB_KEY_FOREIGN, ['section'], 'course_section', ['id']);
+        $table->add_key('un_learningplan_options', XMLDB_KEY_UNIQUE, ['course', 'section']);
+
+        // Conditionally launch create table for local_learningplan_options.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Learningplan savepoint reached.
+        upgrade_plugin_savepoint(true, 2025020467, 'local', 'learningplan');
+    }
+
 
     return true;
 }

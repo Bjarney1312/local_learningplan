@@ -28,3 +28,5 @@ defined('MOODLE_INTERNAL') || die();
 $string['pluginname'] = 'Lernplan';
 $string['button_save_to_learningplan'] = 'Speichern';
 $string['button_delete_from_learningplan'] = 'Entfernen';
+$string['enablelearningplan'] = 'Zum Lernplan hinzufügbar';
+

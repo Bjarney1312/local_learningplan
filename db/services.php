@@ -40,6 +40,22 @@ $functions = [
         'description' => 'Updates the completion status for a learning plan entry',
         'type' => 'write',
         'ajax' => true
-    ]
+    ],
+    'local_learningplan_toggle_section_option' => [
+        'classname' => 'local_learningplan\external\learningplan_service',
+        'methodname' => 'toggle_section_option',
+        'classpath' => 'local/learningplan/externallib.php',
+        'description' => 'Toggles the learning plan option for a section',
+        'type' => 'write',
+        'ajax' => true
+    ],
+    'local_learningplan_get_section_option' => [
+        'classname' => 'local_learningplan\external\learningplan_service',
+        'methodname' => 'get_section_option',
+        'classpath' => 'local/learningplan/externallib.php',
+        'description' => 'Gets the learning plan option for a section',
+        'type' => 'read',
+        'ajax' => true
+    ],
 ];
 
