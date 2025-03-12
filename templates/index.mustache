@@ -19,6 +19,19 @@
     }
 }}
 <div>
+
+    <!-- Suchfeld & Filter -->
+    <div>
+        <input type="text" id="searchInput" placeholder="Suche...">
+        <select id="filterSelect">
+            <option value="">Alle anzeigen</option>
+            <option value="Offen">Offen</option>
+            <option value="In Bearbeitung">In Bearbeitung</option>
+            <option value="Abgeschlossen">Abgeschlossen</option>
+        </select>
+    </div>
+
+    <!-- Tabelle -->
     <table>
         <tr>
             <th>Kurs</th>
@@ -29,8 +42,8 @@
             <th>Entfernen</th>
         </tr>
         {{#sections}}
-            <tr class="learningplan-section" data-sectionid="{{sectionid}}">
-                <td><a href="{{courseurl}}" target="_blank">{{coursename}}</a></td>
+            <tr class="learningplan-section" data-sectionid="{{sectionid}}" data-progress="{{progress}}">
+            <td><a href="{{courseurl}}" target="_blank">{{coursename}}</a></td>
                 <td><a href="{{sectionurl}}" target="_blank">{{sectionname}}</a></td>
                 <td>{{addeddate}}</td>
                 <td>

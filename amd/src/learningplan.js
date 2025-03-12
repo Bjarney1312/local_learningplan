@@ -97,6 +97,45 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                 }]);
             });
 
+
+
+            /**
+             * SUCHE UND FILTER
+             */
+            $(document).ready(function() {
+                const searchInput = $("#searchInput");
+                const filterSelect = $("#filterSelect");
+
+                /**
+                 *
+                 */
+                function filterTable() {
+                    let searchText = searchInput.val().toLowerCase();
+                    let filterValue = filterSelect.val().toLowerCase();
+
+                    $(".learningplan-section").each(function() {
+                        let row = $(this);
+                        let courseName = row.find("td").eq(0).text().toLowerCase();
+                        let sectionName = row.find("td").eq(1).text().toLowerCase();
+                        let progress = row.data("progress").toLowerCase();
+
+                        let matchesSearch = courseName.includes(searchText) || sectionName.includes(searchText);
+                        let matchesFilter = filterValue === "" || progress === filterValue;
+
+                        if (matchesSearch && matchesFilter) {
+                            row.show();
+                        } else {
+                            row.hide();
+                        }
+                    });
+                }
+
+                // Event Listener hinzufügen
+                searchInput.on("keyup", filterTable);
+                filterSelect.on("change", filterTable);
+            });
+
+
         }
     };
 });
