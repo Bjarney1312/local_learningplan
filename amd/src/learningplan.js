@@ -98,7 +98,6 @@ define(['jquery', 'core/ajax'], function($, ajax) {
             });
 
 
-
             /**
              * SUCHE UND FILTER
              */
@@ -134,6 +133,71 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                 searchInput.on("keyup", filterTable);
                 filterSelect.on("change", filterTable);
             });
+
+            /**
+             * TABELLENSORTIERUNG
+             */
+            $(document).ready(function () {
+                let sortDirection = {}; // Speichert die Sortierrichtung für jede Spalte
+
+                $(".sortable").on("click", function () {
+                    let column = $(this).data("column");
+                    let tableBody = $("#learningPlanTable tbody");
+                    let rows = tableBody.find("tr").toArray();
+
+                    // Wechselnde Sortierrichtung
+                    sortDirection[column] = !sortDirection[column];
+
+                    rows.sort(function (rowA, rowB) {
+                        let cellA = getCellValue($(rowA), column);
+                        let cellB = getCellValue($(rowB), column);
+
+                        return (cellA < cellB ? -1 : 1) * (sortDirection[column] ? 1 : -1);
+                    });
+
+                    // Sortierte Zeilen in <tbody> einfügen (nicht <thead>!)
+                    $.each(rows, function (index, row) {
+                        tableBody.append(row);
+                    });
+                });
+
+                /**
+                 * Gibt den Index einer bestimmten Tabellenspalte zurück.
+                 *
+                 * @param {string} column - Der Name der Spalte, nach der sortiert werden soll.
+                 * @returns {number} Der Index der Spalte.
+                 */
+                function getColumnIndex(column) {
+                    let columns = ["coursename", "sectionname", "addeddate", "processing_deadline", "progress"];
+                    return columns.indexOf(column);
+                }
+
+                /**
+                 * Gibt den Index einer bestimmten Tabellenspalte zurück.
+                 * @param {string} row - Der Name der Spalte, nach der sortiert werden soll.
+                 * @param {string} column - Der Name der Spalte, nach der sortiert werden soll.
+                 * @returns {number} Der Index der Spalte.
+                 */
+                function getCellValue(row, column) {
+                    let cell = row.find("td").eq(getColumnIndex(column));
+
+                    if (column === "processing_deadline") {
+                        return new Date(cell.find("input").val()).getTime() || 0;
+                    }
+
+                    if (column === "progress") {
+                        return cell.find("select").val();
+                    }
+
+                    if (column === "addeddate") {
+                        return new Date(cell.text().trim().split(".").reverse().join("-")).getTime() || 0;
+                    }
+
+                    return cell.text().trim();
+                }
+            });
+
+
 
 
         }

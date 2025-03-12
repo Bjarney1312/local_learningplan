@@ -32,22 +32,24 @@
     </div>
 
     <!-- Tabelle -->
-    <table>
+    <table id="learningPlanTable">
+        <thead>
         <tr>
-            <th>Kurs</th>
-            <th>Abschnitt</th>
-            <th>Hinzugefügt am</th>
-            <th>Bearbeitung bis</th>
-            <th>Bearbeitungsstand</th>
+            <th data-column="coursename" class="sortable">Kurs</th>
+            <th data-column="sectionname" class="sortable">Abschnitt</th>
+            <th data-column="addeddate" class="sortable">Hinzugefügt am</th>
+            <th data-column="processing_deadline" class="sortable">Bearbeitung bis</th>
+            <th data-column="progress" class="sortable">Bearbeitungsstand</th>
             <th>Entfernen</th>
         </tr>
+        </thead>
+        <tbody>
         {{#sections}}
             <tr class="learningplan-section" data-sectionid="{{sectionid}}" data-progress="{{progress}}">
-            <td><a href="{{courseurl}}" target="_blank">{{coursename}}</a></td>
+                <td><a href="{{courseurl}}" target="_blank">{{coursename}}</a></td>
                 <td><a href="{{sectionurl}}" target="_blank">{{sectionname}}</a></td>
-                <td>{{addeddate}}</td>
+                <td data-value="{{addedtimestamp}}">{{addeddate}}</td>
                 <td>
-                    <!-- HTML5 Datepicker -->
                     <input type="date" class="datepicker"
                            data-courseid="{{courseid}}"
                            data-sectionid="{{sectionid}}"
@@ -76,5 +78,7 @@
                 <td colspan="6" class="text-center">Du hast noch keine gespeicherten Lernbereiche.</td>
             </tr>
         {{/sections}}
+        </tbody>
     </table>
+
 </div>
