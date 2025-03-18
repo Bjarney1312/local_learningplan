@@ -207,7 +207,7 @@ class learningplan_service extends external_api {
             ]);
         } else {
             // Standardwert: 1 (hinzufügbar)
-            $newvalue = 1;
+            $newvalue = 0;
             $DB->insert_record('local_learningplan_options', [
                 'section' => $sectionid,
                 'course' => $courseid,

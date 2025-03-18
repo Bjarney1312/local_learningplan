@@ -10,7 +10,9 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     return;
                 }
 
-                let sectionId = $(this).closest('.section-actions').data('sectionid');
+                //let sectionId = $(this).closest('.section-actions').data('sectionid');
+                let sectionId = $(this).closest('.section').attr('id')?.replace('section-', '');
+
                 let courseId = $('body').attr('class').match(/course-(\d+)/);
                 courseId = courseId ? courseId[1] : null;
 
@@ -29,7 +31,7 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         // Button-Titel basierend auf dem Wert setzen
                         let menuItem = $('<a href="#" class="dropdown-item learningplan-menu-item">')
                             .html('<i class="icon fa fa-list-alt fa-fw"></i> ' +
-                                (response == 1 ? 'Nicht zum Lernplan hinzufügbar' : 'Zum Lernplan hinzufügbar'))
+                                (response == 1 ? 'Lernplan deaktivieren' : 'Lernplan aktivieren'))
                             .on('click', function(e) {
                                 e.preventDefault();
                                 toggleLearningPlanSetting(sectionId, courseId, menuItem);
@@ -65,12 +67,15 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         courseid: courseId
                     },
                     done: function(newvalue) {
-                        let newText = (newvalue == 1 ? 'Nicht zum Lernplan hinzufügbar' : 'Zum Lernplan hinzufügbar');
+                        let newText = (newvalue == 1 ? 'Lernplan deaktivieren' : 'Lernplan aktivieren');
                         menuItem.html('<i class="icon fa fa-list-alt fa-fw"></i> ' + newText);
                         console.log("Lernplan-Einstellung für Abschnitt " + sectionId + " geändert!");
 
                         // **Section-Button aktualisieren**
-                        let sectionButton = $('.section-' + sectionId + ' .learningplan-save-button');
+                        let sectionButton = $('[data-section-id="' + sectionId + '"].learningplan-save-button');
+                        console.log("Suche Button für sectionId:", sectionId);
+                        console.log("Gefundene Elemente:", sectionButton.length);
+
                         if (newvalue == 0) {
                             sectionButton.hide();
                         } else {
