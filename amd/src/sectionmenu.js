@@ -10,7 +10,6 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     return;
                 }
 
-                //let sectionId = $(this).closest('.section-actions').data('sectionid');
                 let sectionId = $(this).closest('.section').attr('id')?.replace('section-', '');
 
                 let courseId = $('body').attr('class').match(/course-(\d+)/);
@@ -42,8 +41,27 @@ define(['jquery', 'core/ajax'], function($, ajax) {
 
                         // **Section-Button ein-/ausblenden**
                         let sectionButton = $('.section-' + sectionId + ' .learningplan-save-button');
-                        if (response == 0) {
+                        if (response === 0) {
                             sectionButton.hide();
+
+                            // **Lernplan-Eintrag entfernen, falls vorhanden**
+                            ajax.call([{
+                                methodname: 'local_learningplan_delete_section_data_for_all',
+                                args: {
+                                    courseid: courseId,
+                                    sectionid: sectionId
+                                },
+                                done: function() {
+                                    console.log("Lernplan-Eintrag für Abschnitt " + sectionId + " wurde für alle User entfernt.");
+                                    sectionButton.find('i').removeClass('fa-trash').addClass('fa-save');
+                                    sectionButton.removeClass('btn-danger').addClass('btn-primary');
+                                },
+                                fail: function(error) {
+                                    console.error('Fehler beim Entfernen des Lernplan-Eintrags:', error);
+                                    console.log('Section id=' + sectionId + ' Courseid=' + courseId);
+                                    console.log('Nachricht aus der Basis Funktion');
+                                }
+                            }]);
                         } else {
                             sectionButton.show();
                         }
@@ -76,8 +94,27 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         console.log("Suche Button für sectionId:", sectionId);
                         console.log("Gefundene Elemente:", sectionButton.length);
 
-                        if (newvalue == 0) {
+                        if (newvalue === 0) {
                             sectionButton.hide();
+
+                            // **Lernplan-Eintrag entfernen, falls vorhanden**
+                            ajax.call([{
+                                methodname: 'local_learningplan_delete_section_data_for_all',
+                                args: {
+                                    courseid: courseId,
+                                    sectionid: sectionId
+                                },
+                                done: function() {
+                                    console.log("Lernplan-Eintrag für Abschnitt " + sectionId + " wurde für alle User entfernt.");
+                                    sectionButton.find('i').removeClass('fa-trash').addClass('fa-save');
+                                    sectionButton.removeClass('btn-danger').addClass('btn-primary');
+                                },
+                                fail: function(error) {
+                                    console.error('Fehler beim Entfernen des Lernplan-Eintrags:', error);
+                                    console.log('Section id=' + sectionId + ' Courseid=' + courseId);
+                                    console.log('Nachricht aus der Toggle Funktion');
+                                }
+                            }]);
                         } else {
                             sectionButton.show();
                         }

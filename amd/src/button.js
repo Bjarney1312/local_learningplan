@@ -16,42 +16,54 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                 var sectionTitle = $(this);
                 var sectionId = sectionTitle.closest('[id^="section-"]').attr('id').replace('section-', '');
 
-                if (!sectionTitle.find('.learningplan-save-button').length) {
-                    let button = $('<button>')
-                        .addClass('btn btn-icon btn-primary learningplan-save-button')
-                        .attr('data-section-id', sectionId)
-                        .attr('data-course-id', courseId)
-                        .attr('data-user-id', userId)
-                        .html('<i class="icon fa fa-save"></i>');
+                // API Call: Prüfen, ob die Lernplanfunktion für die Sektion aktiv ist
+                ajax.call([{
+                    methodname: 'local_learningplan_get_section_option',
+                    args: {
+                        sectionid: sectionId,
+                        courseid: courseId
+                    },
+                    done: function(response) {
 
-                    ajax.call([{
-                        methodname: 'local_learningplan_check_section_data',
-                        args: {
-                            courseid: courseId,
-                            sectionid: sectionId,
-                            userid: userId
-                        },
-                        done: function(response) {
-                            let icon = button.find('i');
-                            if (response) {
-                                if (icon.hasClass('fa-save')) {
-                                    icon.removeClass('fa-save').addClass('fa-trash');
-                                    button.removeClass('btn-primary').addClass('btn-danger');
+                        if (!sectionTitle.find('.learningplan-save-button').length) {
+                            let button = $('<button>')
+                                .addClass('btn btn-icon btn-primary learningplan-save-button')
+                                .attr('data-section-id', sectionId)
+                                .attr('data-course-id', courseId)
+                                .attr('data-user-id', userId)
+                                .html('<i class="icon fa fa-save"></i>');
+
+                            ajax.call([{
+                                methodname: 'local_learningplan_check_section_data',
+                                args: {
+                                    courseid: courseId,
+                                    sectionid: sectionId,
+                                    userid: userId
+                                },
+                                done: function(response) {
+                                    let icon = button.find('i');
+                                    if (response) {
+                                        icon.removeClass('fa-save').addClass('fa-trash');
+                                        button.removeClass('btn-primary').addClass('btn-danger');
+                                    }
+                                },
+                                fail: function(error) {
+                                    console.error('Fehler:', error);
                                 }
-                            } else {
-                                if (icon.hasClass('fa-trash')) {
-                                    icon.removeClass('fa-trash').addClass('fa-save');
-                                    button.removeClass('btn-danger').addClass('btn-primary');
-                                }
+                            }]);
+
+                            sectionTitle.prepend(button);
+
+                            if (response === 0) {
+                                console.log("Lernplan für Abschnitt " + sectionId + " ist deaktiviert. Button nicht sichtbar.");
+                                button.hide();
                             }
-                        },
-                        fail: function(error) {
-                            console.error('Fehler:', error);
                         }
-                    }]);
-
-                    sectionTitle.prepend(button);
-                }
+                    },
+                    fail: function(error) {
+                        console.error('Fehler beim Abrufen der Lernplan-Option:', error);
+                    }
+                }]);
             });
 
             $(document).on('click', '.learningplan-save-button', function() {

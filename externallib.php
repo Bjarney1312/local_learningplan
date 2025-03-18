@@ -1,4 +1,5 @@
 <?php
+
 namespace local_learningplan\external;
 
 global $CFG;
@@ -10,11 +11,13 @@ use stdClass;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir.'/externallib.php');
+require_once($CFG->libdir . '/externallib.php');
 
-class learningplan_service extends external_api {
+class learningplan_service extends external_api
+{
 
-    public static function check_section_data_parameters() {
+    public static function check_section_data_parameters()
+    {
         return new external_function_parameters([
             'courseid' => new external_value(PARAM_INT, 'Course ID'),
             'sectionid' => new external_value(PARAM_INT, 'Section ID'),
@@ -22,7 +25,8 @@ class learningplan_service extends external_api {
         ]);
     }
 
-    public static function check_section_data($courseid, $sectionid, $userid) {
+    public static function check_section_data($courseid, $sectionid, $userid)
+    {
         global $DB;
 
         $exists = $DB->record_exists('local_learningplan', array('course' => $courseid, 'section' => $sectionid, 'user' => $userid));
@@ -35,7 +39,8 @@ class learningplan_service extends external_api {
         return new external_value(PARAM_TEXT, 'Existenzstatus');
     }
 
-    public static function save_section_data_parameters() {
+    public static function save_section_data_parameters()
+    {
         return new external_function_parameters([
             'courseid' => new external_value(PARAM_INT, 'Course ID'),
             'sectionid' => new external_value(PARAM_INT, 'Section ID'),
@@ -43,7 +48,8 @@ class learningplan_service extends external_api {
         ]);
     }
 
-    public static function save_section_data($courseid, $sectionid, $userid) {
+    public static function save_section_data($courseid, $sectionid, $userid)
+    {
         global $DB;
 
         // Daten in die Tabelle einfügen
@@ -59,12 +65,14 @@ class learningplan_service extends external_api {
         return 'success';
     }
 
-    public static function save_section_data_returns() {
+    public static function save_section_data_returns()
+    {
         return new external_value(PARAM_TEXT, 'Status message');
     }
 
     // Parameter für das Löschen von Daten
-    public static function delete_section_data_parameters() {
+    public static function delete_section_data_parameters()
+    {
         return new external_function_parameters([
             'courseid' => new external_value(PARAM_INT, 'Course ID'),
             'sectionid' => new external_value(PARAM_INT, 'Section ID'),
@@ -73,7 +81,8 @@ class learningplan_service extends external_api {
     }
 
     // Funktion zum Löschen der Daten
-    public static function delete_section_data($courseid, $sectionid, $userid) {
+    public static function delete_section_data($courseid, $sectionid, $userid)
+    {
         global $DB;
 
         // Datensatz in der Tabelle löschen
@@ -87,12 +96,14 @@ class learningplan_service extends external_api {
     }
 
     // Rückgabetyp für das Löschen
-    public static function delete_section_data_returns() {
+    public static function delete_section_data_returns()
+    {
         return new external_value(PARAM_TEXT, 'Status message');
     }
 
     // Hier Datepicker
-    public static function update_deadline($courseid, $sectionid, $userid, $deadline) {
+    public static function update_deadline($courseid, $sectionid, $userid, $deadline)
+    {
         global $DB;
 
         // Überprüfe die Parameter
@@ -123,7 +134,8 @@ class learningplan_service extends external_api {
         return true;
     }
 
-    public static function update_deadline_parameters() {
+    public static function update_deadline_parameters()
+    {
         return new external_function_parameters([
             'courseid' => new external_value(PARAM_INT, 'Die Kurs-ID'),
             'sectionid' => new external_value(PARAM_INT, 'Die Abschnitts-ID'),
@@ -132,13 +144,14 @@ class learningplan_service extends external_api {
         ]);
     }
 
-    public static function update_deadline_returns() {
+    public static function update_deadline_returns()
+    {
         return new external_value(PARAM_BOOL, 'Gibt zurück, ob das Speichern erfolgreich war');
     }
 
 
-
-    public static function update_progress($courseid, $sectionid, $userid, $progress) {
+    public static function update_progress($courseid, $sectionid, $userid, $progress)
+    {
         global $DB;
 
         // Parameter validieren
@@ -167,7 +180,8 @@ class learningplan_service extends external_api {
         return true;
     }
 
-    public static function update_progress_parameters() {
+    public static function update_progress_parameters()
+    {
         return new external_function_parameters([
             'courseid' => new external_value(PARAM_INT, 'Die Kurs-ID'),
             'sectionid' => new external_value(PARAM_INT, 'Die Abschnitts-ID'),
@@ -176,19 +190,17 @@ class learningplan_service extends external_api {
         ]);
     }
 
-    public static function update_progress_returns() {
+    public static function update_progress_returns()
+    {
         return new external_value(PARAM_BOOL, 'Gibt zurück, ob das Speichern erfolgreich war');
     }
-
-
-
-
 
 
     // Menüpunkt für sections
 
 
-    public static function toggle_section_option($sectionid, $courseid) {
+    public static function toggle_section_option($sectionid, $courseid)
+    {
         global $DB;
 
         self::validate_parameters(self::toggle_section_option_parameters(), [
@@ -218,18 +230,21 @@ class learningplan_service extends external_api {
         return $newvalue;
     }
 
-    public static function toggle_section_option_parameters() {
+    public static function toggle_section_option_parameters()
+    {
         return new external_function_parameters([
             'sectionid' => new external_value(PARAM_INT, 'ID des Abschnitts'),
             'courseid' => new external_value(PARAM_INT, 'ID des Kurses')
         ]);
     }
 
-    public static function toggle_section_option_returns() {
+    public static function toggle_section_option_returns()
+    {
         return new external_value(PARAM_INT, 'Neuer Wert (0 oder 1)');
     }
 
-    public static function get_section_option($sectionid, $courseid) {
+    public static function get_section_option($sectionid, $courseid)
+    {
         global $DB;
 
         self::validate_parameters(self::toggle_section_option_parameters(), [
@@ -241,11 +256,45 @@ class learningplan_service extends external_api {
         return $record ? $record->allow_learningplan : 1; // Standardwert 1, falls nicht vorhanden
     }
 
-    public static function get_section_option_parameters() {
+    public static function get_section_option_parameters()
+    {
         return self::toggle_section_option_parameters();
     }
 
-    public static function get_section_option_returns() {
+    public static function get_section_option_returns()
+    {
         return new external_value(PARAM_INT, 'Wert (0 oder 1)');
     }
+
+
+// Section für alle aus dem Lernplan löschen
+
+    public static function delete_section_data_for_all_parameters()
+    {
+        return new external_function_parameters([
+            'courseid' => new external_value(PARAM_INT, 'Course ID'),
+            'sectionid' => new external_value(PARAM_INT, 'Section ID'),
+        ]);
+    }
+
+// Funktion zum Löschen der Daten
+    public static function delete_section_data_for_all($courseid, $sectionid)
+    {
+        global $DB;
+
+        // Datensatz in der Tabelle löschen
+        $DB->delete_records('local_learningplan', [
+            'course' => $courseid,
+            'section' => $sectionid,
+        ]);
+
+        return 'deleted';
+    }
+
+// Rückgabetyp für das Löschen
+    public static function delete_section_data_for_all_returns()
+    {
+        return new external_value(PARAM_TEXT, 'Status message');
+    }
+
 }

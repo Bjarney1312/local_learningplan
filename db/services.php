@@ -57,5 +57,13 @@ $functions = [
         'type' => 'read',
         'ajax' => true
     ],
+    'local_learningplan_delete_section_data_for_all' => [
+        'classname' => 'local_learningplan\external\learningplan_service',
+        'methodname' => 'delete_section_data_for_all',
+        'classpath' => 'local/learningplan/externallib.php',
+        'description' => 'Delete section data for all users',
+        'type' => 'write',
+        'ajax' => true
+    ],
 ];
 
