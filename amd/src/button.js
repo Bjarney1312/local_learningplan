@@ -27,11 +27,11 @@ define(['jquery', 'core/ajax'], function($, ajax) {
 
                         if (!sectionTitle.find('.learningplan-save-button').length) {
                             let button = $('<button>')
-                                .addClass('btn btn-icon btn-primary learningplan-save-button')
+                                .addClass('btn learningplan-save-button')
                                 .attr('data-section-id', sectionId)
                                 .attr('data-course-id', courseId)
                                 .attr('data-user-id', userId)
-                                .html('<i class="icon fa fa-save"></i>');
+                                .html('<i class="icon fa-regular fa-bookmark"></i>');
 
                             ajax.call([{
                                 methodname: 'local_learningplan_check_section_data',
@@ -43,8 +43,8 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                                 done: function(response) {
                                     let icon = button.find('i');
                                     if (response) {
-                                        icon.removeClass('fa-save').addClass('fa-trash');
-                                        button.removeClass('btn-primary').addClass('btn-danger');
+                                        icon.removeClass('fa-regular').addClass('fa-solid');
+                                        //button.removeClass('btn-primary').addClass('btn-danger');
                                     }
                                 },
                                 fail: function(error) {
@@ -73,7 +73,7 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                 var userId = button.data('user-id');
                 var currentIcon = button.find('i');
 
-                if (currentIcon.hasClass('fa-save')) {
+                if (currentIcon.hasClass('fa-regular')) {
                     ajax.call([{
                         methodname: 'local_learningplan_save_section_data',
                         args: {
@@ -82,15 +82,15 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                             userid: userId
                         },
                         done: function() {
-                            currentIcon.removeClass('fa-save').addClass('fa-trash');
-                            button.removeClass('btn-primary').addClass('btn-danger');
+                            currentIcon.removeClass('fa-regular').addClass('fa-solid');
+                            //button.removeClass('btn-primary').addClass('btn-danger');
                         },
                         fail: function(error) {
                             console.log('Fehler:', error);
                             alert('Fehler beim Speichern der Daten.');
                         }
                     }]);
-                } else if (currentIcon.hasClass('fa-trash')) {
+                } else if (currentIcon.hasClass('fa-solid')) {
                     ajax.call([{
                         methodname: 'local_learningplan_delete_section_data',
                         args: {
@@ -99,8 +99,8 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                             userid: userId
                         },
                         done: function() {
-                            currentIcon.removeClass('fa-trash').addClass('fa-save');
-                            button.removeClass('btn-danger').addClass('btn-primary');
+                            currentIcon.removeClass('fa-solid').addClass('fa-regular');
+                            //button.removeClass('btn-danger').addClass('btn-primary');
                         },
                         fail: function(error) {
                             console.log('Fehler:', error);
