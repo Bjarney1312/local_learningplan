@@ -40,6 +40,14 @@ function local_learningplan_extend_navigation_frontpage(navigation_node $frontpa
 function local_learningplan_extend_navigation(global_navigation $navigation) {
     global $PAGE;
     global $USER;
+
+    if (isloggedin() && !isguestuser()) {
+        $PAGE->requires->js_call_amd('local_learningplan/navigation', 'init', [
+            'linkUrl'   => (new moodle_url('/moodle/local/learningplan/index.php'))->out_omit_querystring(),
+            'linkLabel' => get_string('pluginname', 'local_learningplan')
+        ]);
+    }
+
     $PAGE->requires->js_call_amd('local_learningplan/button', 'init', ['userid' => $USER->id]);
     $PAGE->requires->js_call_amd('local_learningplan/sectionmenu', 'init');
 }
