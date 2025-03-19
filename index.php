@@ -36,6 +36,8 @@ if (isguestuser()) {
 }
 
 $PAGE->requires->js_call_amd('local_learningplan/learningplan', 'init');
+$PAGE->requires->css(new moodle_url('/local/learningplan/styles/learningplan.css'));
+
 
 $output = $PAGE->get_renderer('local_learningplan');
 echo $output->header();

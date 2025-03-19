@@ -106,7 +106,7 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                 const filterSelect = $("#filterSelect");
 
                 /**
-                 *
+                 * Filtert die Tabelle basierend auf der Eingabe im Suchfeld und der Filterauswahl.
                  */
                 function filterTable() {
                     let searchText = searchInput.val().toLowerCase();
@@ -118,7 +118,23 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         let sectionName = row.find("td").eq(1).text().toLowerCase();
                         let progress = row.data("progress").toLowerCase();
 
-                        let matchesSearch = courseName.includes(searchText) || sectionName.includes(searchText);
+                        // Extrahiere das Datum aus dem timecreated-Feld (falls als dd.mm.yyyy gespeichert)
+                        // let timeCreatedText = row.find("td").eq(2).text().trim();
+                        // let timeCreated = formatDateForSearch(timeCreatedText);
+                        let timeCreated = row.find("td").eq(2).text().trim();
+
+                        // Extrahiere das Datum aus dem processing_deadline-Feld (falls als <input> gespeichert)
+                         let deadlineInput = row.find("td").eq(3).find("input");
+                         let processingDeadline = deadlineInput.length ? deadlineInput.val() : "";
+                         processingDeadline = formatDateForSearch(processingDeadline);
+
+                        // Suchtext mit Datum vergleichen
+                        let matchesSearch =
+                            courseName.includes(searchText) ||
+                            sectionName.includes(searchText) ||
+                            timeCreated.includes(searchText) ||
+                            processingDeadline.includes(searchText);
+
                         let matchesFilter = filterValue === "" || progress === filterValue;
 
                         if (matchesSearch && matchesFilter) {
@@ -132,15 +148,30 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                 // Event Listener hinzufügen
                 searchInput.on("keyup", filterTable);
                 filterSelect.on("change", filterTable);
+
+
+                /**
+                 * Wandelt ein Datum im Format "dd.mm.yyyy" in "yyyy-mm-dd" um.
+                 * @param {string }dateString
+                 */
+                 function formatDateForSearch(dateString) {
+                    //let parts = dateString.split(".");
+                    let parts = dateString.split("-");
+                    if (parts.length === 3) {
+                        // return `${parts[2]}-${parts[1]}-${parts[0]}`;
+                        return `${parts[2]}.${parts[1]}.${parts[0]}`;
+                    }
+                    return dateString; // Falls das Format nicht passt, original zurückgeben
+                 }
             });
 
             /**
              * TABELLENSORTIERUNG
              */
-            $(document).ready(function () {
+            $(document).ready(function() {
                 let sortDirection = {}; // Speichert die Sortierrichtung für jede Spalte
 
-                $(".sortable").on("click", function () {
+                $(".sortable").on("click", function() {
                     let column = $(this).data("column");
                     let tableBody = $("#learningPlanTable tbody");
                     let rows = tableBody.find("tr").toArray();
@@ -148,7 +179,7 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     // Wechselnde Sortierrichtung
                     sortDirection[column] = !sortDirection[column];
 
-                    rows.sort(function (rowA, rowB) {
+                    rows.sort(function(rowA, rowB) {
                         let cellA = getCellValue($(rowA), column);
                         let cellB = getCellValue($(rowB), column);
 
@@ -156,9 +187,12 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     });
 
                     // Sortierte Zeilen in <tbody> einfügen (nicht <thead>!)
-                    $.each(rows, function (index, row) {
+                    $.each(rows, function(index, row) {
                         tableBody.append(row);
                     });
+
+                    // Aktualisiere die Sortierpfeile
+                    updateSortIndicators();
                 });
 
                 /**
@@ -195,9 +229,23 @@ define(['jquery', 'core/ajax'], function($, ajax) {
 
                     return cell.text().trim();
                 }
+
+
+                /**
+                 * Aktualisiert die Pfeile in den Spaltenüberschriften, je nach Sortierrichtung.
+                 */
+                function updateSortIndicators() {
+                    $(".sortable").each(function() {
+                        let column = $(this).data("column");
+                        if (sortDirection[column]) {
+                            $(this).addClass("sorted-asc").removeClass("sorted-desc");
+                        } else {
+                            $(this).addClass("sorted-desc").removeClass("sorted-asc");
+                        }
+                    });
+                }
+
             });
-
-
 
 
         }
