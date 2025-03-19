@@ -1,22 +1,20 @@
 define(['jquery', 'core/ajax'], function($, ajax) {
     return {
         init: function(params) {
-            console.log("JavaScript wird geladen!");
-            var userId = params;
-            var courseId = $('body').attr('class').match(/course-(\d+)/);
+            let userId = params;
+            let courseId = $('body').attr('class').match(/course-(\d+)/);
             courseId = courseId ? courseId[1] : null;
 
             if (!userId || !courseId) {
-                console.error("Fehler: userId oder courseId fehlen!");
                 return;
             }
 
-            // Füge Buttons zu jedem Section-Titel hinzu, falls noch nicht vorhanden
+            // Add a button to each section title if not already present
             $('.sectionname').each(function() {
-                var sectionTitle = $(this);
-                var sectionId = sectionTitle.closest('[id^="section-"]').attr('id').replace('section-', '');
+                let sectionTitle = $(this);
+                let sectionId = sectionTitle.closest('[id^="section-"]').attr('id').replace('section-', '');
 
-                // API Call: Prüfen, ob die Lernplanfunktion für die Sektion aktiv ist
+                // API Call: Check whether the learning plan function is active for the section
                 ajax.call([{
                     methodname: 'local_learningplan_get_section_option',
                     args: {
@@ -44,34 +42,33 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                                     let icon = button.find('i');
                                     if (response) {
                                         icon.removeClass('fa-regular').addClass('fa-solid');
-                                        //button.removeClass('btn-primary').addClass('btn-danger');
                                     }
                                 },
                                 fail: function(error) {
-                                    console.error('Fehler:', error);
+                                    console.error('Error:', error);
                                 }
                             }]);
 
                             sectionTitle.prepend(button);
 
                             if (response === 0) {
-                                console.log("Lernplan für Abschnitt " + sectionId + " ist deaktiviert. Button nicht sichtbar.");
                                 button.hide();
                             }
                         }
                     },
                     fail: function(error) {
-                        console.error('Fehler beim Abrufen der Lernplan-Option:', error);
+                        console.error('Error when retrieving the learning plan option:', error);
                     }
                 }]);
             });
 
+            // Aktion für den Klick auf den Learningplan-Button
             $(document).on('click', '.learningplan-save-button', function() {
-                var button = $(this);
-                var courseId = button.data('course-id');
-                var sectionId = button.data('section-id');
-                var userId = button.data('user-id');
-                var currentIcon = button.find('i');
+                let button = $(this);
+                let courseId = button.data('course-id');
+                let sectionId = button.data('section-id');
+                let userId = button.data('user-id');
+                let currentIcon = button.find('i');
 
                 if (currentIcon.hasClass('fa-regular')) {
                     ajax.call([{
@@ -83,11 +80,9 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         },
                         done: function() {
                             currentIcon.removeClass('fa-regular').addClass('fa-solid');
-                            //button.removeClass('btn-primary').addClass('btn-danger');
                         },
                         fail: function(error) {
-                            console.log('Fehler:', error);
-                            alert('Fehler beim Speichern der Daten.');
+                            console.error('Error:', error);
                         }
                     }]);
                 } else if (currentIcon.hasClass('fa-solid')) {
@@ -100,11 +95,9 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         },
                         done: function() {
                             currentIcon.removeClass('fa-solid').addClass('fa-regular');
-                            //button.removeClass('btn-danger').addClass('btn-primary');
                         },
                         fail: function(error) {
-                            console.log('Fehler:', error);
-                            alert('Fehler beim Entfernen der Daten.');
+                            console.error('Error:', error);
                         }
                     }]);
                 }

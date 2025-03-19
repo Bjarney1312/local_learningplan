@@ -1,7 +1,6 @@
 define(['jquery', 'core/ajax'], function($, ajax) {
     return {
         init: function() {
-            console.log("Lernplan-Menüerweiterung geladen.");
 
             $(document).on('click', '.section-actions .dropdown-toggle', function() {
                 let menu = $(this).closest('.dropdown').find('.dropdown-menu');
@@ -19,7 +18,7 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     return;
                 }
 
-                // API Call: Prüfen, ob der Abschnitt bereits in der DB ist
+                // API Call: Check whether the section is already in the DB
                 ajax.call([{
                     methodname: 'local_learningplan_get_section_option',
                     args: {
@@ -27,24 +26,23 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         courseid: courseId
                     },
                     done: function(response) {
-                        // Button-Titel basierend auf dem Wert setzen
+                        // Set button title based on the value allow_learningplan
                         let menuItem = $('<a href="#" class="dropdown-item learningplan-menu-item">')
                             .html('<i class="icon fa fa-list-alt fa-fw"></i> ' +
-                                (response == 1 ? 'Lernplan deaktivieren' : 'Lernplan aktivieren'))
+                                (response === 1 ? 'Lernplan deaktivieren' : 'Lernplan aktivieren'))
                             .on('click', function(e) {
                                 e.preventDefault();
                                 toggleLearningPlanSetting(sectionId, courseId, menuItem);
                             });
 
                         menu.append(menuItem);
-                        console.log("Menüeintrag für Abschnitt " + sectionId + " hinzugefügt.");
 
-                        // **Section-Button ein-/ausblenden**
+                        // Show/hide section button
                         let sectionButton = $('.section-' + sectionId + ' .learningplan-save-button');
                         if (response === 0) {
                             sectionButton.hide();
 
-                            // **Lernplan-Eintrag entfernen, falls vorhanden**
+                            // Remove learning plan entries from the database, if present
                             ajax.call([{
                                 methodname: 'local_learningplan_delete_section_data_for_all',
                                 args: {
@@ -52,14 +50,11 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                                     sectionid: sectionId
                                 },
                                 done: function() {
-                                    console.log("Lernplan-Eintrag für Abschnitt " + sectionId + " wurde für alle User entfernt.");
                                     sectionButton.find('i').removeClass('fa-trash').addClass('fa-save');
                                     sectionButton.removeClass('btn-danger').addClass('btn-primary');
                                 },
                                 fail: function(error) {
-                                    console.error('Fehler beim Entfernen des Lernplan-Eintrags:', error);
-                                    console.log('Section id=' + sectionId + ' Courseid=' + courseId);
-                                    console.log('Nachricht aus der Basis Funktion');
+                                    console.error('Error when removing the learning plan entries:', error);
                                 }
                             }]);
                         } else {
@@ -67,15 +62,16 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         }
                     },
                     fail: function(error) {
-                        console.error('Fehler beim Abrufen der Einstellung:', error);
+                        console.error('Error when retrieving the setting:', error);
                     }
                 }]);
             });
 
             /**
-             * @param {number} sectionId
-             * @param {number} courseId
-             * @param {number} menuItem
+             * Updates the item menu to enable or disable the option to add the section to the learning plan.
+             * @param {number} sectionId Number of the section in the course
+             * @param {number} courseId ID of the course
+             * @param {number} menuItem Menu Item
              */
             function toggleLearningPlanSetting(sectionId, courseId, menuItem) {
                 ajax.call([{
@@ -85,19 +81,16 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         courseid: courseId
                     },
                     done: function(newvalue) {
-                        let newText = (newvalue == 1 ? 'Lernplan deaktivieren' : 'Lernplan aktivieren');
+                        let newText = (newvalue === 1 ? 'Lernplan deaktivieren' : 'Lernplan aktivieren');
                         menuItem.html('<i class="icon fa fa-list-alt fa-fw"></i> ' + newText);
-                        console.log("Lernplan-Einstellung für Abschnitt " + sectionId + " geändert!");
 
-                        // **Section-Button aktualisieren**
+                        // Update section button
                         let sectionButton = $('[data-section-id="' + sectionId + '"].learningplan-save-button');
-                        console.log("Suche Button für sectionId:", sectionId);
-                        console.log("Gefundene Elemente:", sectionButton.length);
 
                         if (newvalue === 0) {
                             sectionButton.hide();
 
-                            // **Lernplan-Eintrag entfernen, falls vorhanden**
+                            // Remove learning plan entries from the database, if present
                             ajax.call([{
                                 methodname: 'local_learningplan_delete_section_data_for_all',
                                 args: {
@@ -105,14 +98,11 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                                     sectionid: sectionId
                                 },
                                 done: function() {
-                                    console.log("Lernplan-Eintrag für Abschnitt " + sectionId + " wurde für alle User entfernt.");
                                     sectionButton.find('i').removeClass('fa-trash').addClass('fa-save');
                                     sectionButton.removeClass('btn-danger').addClass('btn-primary');
                                 },
                                 fail: function(error) {
-                                    console.error('Fehler beim Entfernen des Lernplan-Eintrags:', error);
-                                    console.log('Section id=' + sectionId + ' Courseid=' + courseId);
-                                    console.log('Nachricht aus der Toggle Funktion');
+                                    console.error('Error when removing the learning plan entries:', error);
                                 }
                             }]);
                         } else {
@@ -120,7 +110,7 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         }
                     },
                     fail: function(error) {
-                        console.error('Fehler beim Umschalten:', error);
+                        console.error('Error when switching menu item:', error);
                     }
                 }]);
             }

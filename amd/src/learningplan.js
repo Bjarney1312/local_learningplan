@@ -1,5 +1,5 @@
 define(['jquery', 'core/ajax'], function($, ajax) {
- return {
+    return {
         init: function() {
             $(document).on('click', '.remove-section-btn', function() {
                 let button = $(this);
@@ -7,8 +7,7 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                 let sectionId = button.data('sectionid');
                 let userId = button.data('userid');
 
-                console.log('Neue Javascript wurde geladen');
-
+                // Removes the table row and the database entry when a section is removed from the learning plan
                 ajax.call([{
                     methodname: 'local_learningplan_delete_section_data',
                     args: {
@@ -17,36 +16,28 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         userid: userId
                     },
                     done: function() {
-                        console.log('Section aus Datenbank gelöscht');
-                        // Die gesamte Tabellenzeile entfernen
                         $('tr[data-sectionid="' + sectionId + '"]').fadeOut(300, function() {
                             $(this).remove();
                         });
                     },
                     fail: function(error) {
-                        console.error('Fehler beim Entfernen der Section:', error);
+                        console.error('Error when removing the section:', error);
                     }
                 }]);
             });
 
-            console.log('Datepicker wird initialisiert');
-
-            /**
-             * DATEPICKER INITIALISIEREN
-             */
-// Event Listener für das Ändern des Datums
+            // Datepicker-Element
             $(document).ready(function() {
+
                 // Event Listener für das Ändern des Datums
                 $('.datepicker').on('change', function() {
                     let input = $(this);
                     let courseId = input.data('courseid');
                     let sectionId = input.data('sectionid');
                     let userId = input.data('userid');
-                    let newDeadline = input.val(); // Holt das Datum im YYYY-MM-DD Format
+                    let newDeadline = input.val();
 
-                    console.log('Neues Datum gewählt:', newDeadline);
-
-                    // AJAX-Request zum Speichern des neuen Datums
+                    // API-Call zum Speichern des neuen Datums
                     ajax.call([{
                         methodname: 'local_learningplan_update_deadline',
                         args: {
@@ -56,20 +47,17 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                             deadline: newDeadline
                         },
                         done: function() {
-                            console.log('Deadline erfolgreich gespeichert!');
+                            // Nothing to do
                         },
                         fail: function(error) {
-                            console.error('Fehler beim Speichern der Deadline:', error);
+                            console.error('Error when saving the deadline:', error);
                         }
                     }]);
                 });
             });
 
 
-            /**
-             * STATUS DROPDOWN
-             */
-
+            //  Dropdown element for the processing status
             $('.progress-dropdown').on('change', function() {
                 let input = $(this);
                 let courseId = input.data('courseid');
@@ -77,9 +65,7 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                 let userId = input.data('userid');
                 let newProgress = input.val();
 
-                console.log('Neuer Bearbeitungsstand:', newProgress);
-
-                // AJAX-Request zum Speichern des neuen Bearbeitungsstands
+                // API call to save the new processing status
                 ajax.call([{
                     methodname: 'local_learningplan_update_progress',
                     args: {
@@ -89,24 +75,22 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         progress: newProgress
                     },
                     done: function() {
-                        console.log('Bearbeitungsstand erfolgreich gespeichert!');
+                        // Nothing to do
                     },
                     fail: function(error) {
-                        console.error('Fehler beim Speichern des Bearbeitungsstands:', error);
+                        console.error('Error when saving the processing status:', error);
                     }
                 }]);
             });
 
 
-            /**
-             * SUCHE UND FILTER
-             */
+            // Search elements and filter options
             $(document).ready(function() {
                 const searchInput = $("#searchInput");
                 const filterSelect = $("#filterSelect");
 
                 /**
-                 * Filtert die Tabelle basierend auf der Eingabe im Suchfeld und der Filterauswahl.
+                 * Filters the table based on the input in the search field and the filter selection.
                  */
                 function filterTable() {
                     let searchText = searchInput.val().toLowerCase();
@@ -117,18 +101,12 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         let courseName = row.find("td").eq(0).text().toLowerCase();
                         let sectionName = row.find("td").eq(1).text().toLowerCase();
                         let progress = row.data("progress").toLowerCase();
-
-                        // Extrahiere das Datum aus dem timecreated-Feld (falls als dd.mm.yyyy gespeichert)
-                        // let timeCreatedText = row.find("td").eq(2).text().trim();
-                        // let timeCreated = formatDateForSearch(timeCreatedText);
                         let timeCreated = row.find("td").eq(2).text().trim();
 
-                        // Extrahiere das Datum aus dem processing_deadline-Feld (falls als <input> gespeichert)
-                         let deadlineInput = row.find("td").eq(3).find("input");
-                         let processingDeadline = deadlineInput.length ? deadlineInput.val() : "";
-                         processingDeadline = formatDateForSearch(processingDeadline);
+                        let deadlineInput = row.find("td").eq(3).find("input");
+                        let processingDeadline = deadlineInput.length ? deadlineInput.val() : "";
+                        processingDeadline = formatDateForSearch(processingDeadline);
 
-                        // Suchtext mit Datum vergleichen
                         let matchesSearch =
                             courseName.includes(searchText) ||
                             sectionName.includes(searchText) ||
@@ -145,38 +123,34 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     });
                 }
 
-                // Event Listener hinzufügen
+                // Event Listener
                 searchInput.on("keyup", filterTable);
                 filterSelect.on("change", filterTable);
 
 
                 /**
-                 * Wandelt ein Datum im Format "dd.mm.yyyy" in "yyyy-mm-dd" um.
-                 * @param {string }dateString
+                 * Converts a date in the format ‘yyyy-mm-dd’ to ‘dd.mm.yyyy’.
+                 * @param {string} dateString - Date to be formatted
                  */
-                 function formatDateForSearch(dateString) {
-                    //let parts = dateString.split(".");
+                function formatDateForSearch(dateString) {
                     let parts = dateString.split("-");
                     if (parts.length === 3) {
-                        // return `${parts[2]}-${parts[1]}-${parts[0]}`;
                         return `${parts[2]}.${parts[1]}.${parts[0]}`;
                     }
-                    return dateString; // Falls das Format nicht passt, original zurückgeben
-                 }
+                    return dateString; // If the format does not fit, return the original
+                }
             });
 
-            /**
-             * TABELLENSORTIERUNG
-             */
+            // Table sorting
             $(document).ready(function() {
-                let sortDirection = {}; // Speichert die Sortierrichtung für jede Spalte
+                let sortDirection = {};
 
                 $(".sortable").on("click", function() {
                     let column = $(this).data("column");
                     let tableBody = $("#learningPlanTable tbody");
                     let rows = tableBody.find("tr").toArray();
 
-                    // Wechselnde Sortierrichtung
+                    // Alternating sorting direction
                     sortDirection[column] = !sortDirection[column];
 
                     rows.sort(function(rowA, rowB) {
@@ -186,20 +160,17 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         return (cellA < cellB ? -1 : 1) * (sortDirection[column] ? 1 : -1);
                     });
 
-                    // Sortierte Zeilen in <tbody> einfügen (nicht <thead>!)
                     $.each(rows, function(index, row) {
                         tableBody.append(row);
                     });
 
-                    // Aktualisiere die Sortierpfeile
                     updateSortIndicators();
                 });
 
                 /**
-                 * Gibt den Index einer bestimmten Tabellenspalte zurück.
-                 *
-                 * @param {string} column - Der Name der Spalte, nach der sortiert werden soll.
-                 * @returns {number} Der Index der Spalte.
+                 * Returns the index of a specific table column.
+                 * @param {string} column - The name of the column to be sorted by.
+                 * @returns {number} - The index of the column.
                  */
                 function getColumnIndex(column) {
                     let columns = ["coursename", "sectionname", "addeddate", "processing_deadline", "progress"];
@@ -207,10 +178,10 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                 }
 
                 /**
-                 * Gibt den Index einer bestimmten Tabellenspalte zurück.
-                 * @param {string} row - Der Name der Spalte, nach der sortiert werden soll.
-                 * @param {string} column - Der Name der Spalte, nach der sortiert werden soll.
-                 * @returns {number} Der Index der Spalte.
+                 * Returns the content of a specific table column.
+                 * @param {string} row - The name of the row to be sorted by.
+                 * @param {string} column - The name of the column to be sorted by.
+                 * @returns {number} The index of the column.
                  */
                 function getCellValue(row, column) {
                     let cell = row.find("td").eq(getColumnIndex(column));
@@ -232,7 +203,7 @@ define(['jquery', 'core/ajax'], function($, ajax) {
 
 
                 /**
-                 * Aktualisiert die Pfeile in den Spaltenüberschriften, je nach Sortierrichtung.
+                 * Updates the arrows in the column headings, depending on the sorting direction.
                  */
                 function updateSortIndicators() {
                     $(".sortable").each(function() {
@@ -244,10 +215,7 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                         }
                     });
                 }
-
             });
-
-
         }
     };
 });
