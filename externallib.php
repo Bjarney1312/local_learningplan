@@ -142,6 +142,7 @@ class learningplan_service extends external_api
         $record->course = $params['courseid'];
         $record->section = $params['sectionid'];
         $record->user = $params['userid'];
+        $record->state = 'open';
         $record->timecreated = time();
 
         try {
@@ -303,10 +304,10 @@ class learningplan_service extends external_api
     public static function update_progress_parameters(): external_function_parameters
     {
         return new external_function_parameters([
-            'courseid' => new external_value(PARAM_INT, 'Die Kurs-ID'),
-            'sectionid' => new external_value(PARAM_INT, 'Die Abschnitts-ID'),
-            'userid' => new external_value(PARAM_INT, 'Die Benutzer-ID'),
-            'progress' => new external_value(PARAM_ALPHANUMEXT, 'Der neue Fortschritt (offen, in_bearbeitung, abgeschlossen)')
+            'courseid' => new external_value(PARAM_INT, 'Course ID'),
+            'sectionid' => new external_value(PARAM_INT, 'Section ID'),
+            'userid' => new external_value(PARAM_INT, 'User ID'),
+            'progress' => new external_value(PARAM_ALPHANUMEXT, 'New progress state')
         ]);
     }
 

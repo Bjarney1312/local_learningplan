@@ -47,6 +47,11 @@ class index_page implements renderable, templatable
             $sections = $DB->get_records('local_learningplan', ['user' => $USER->id]);
 
             $data = [];
+
+            $progress_open = get_string('progress_open', 'local_learningplan');
+            $progress_in_progress = get_string('progress_in_progress', 'local_learningplan');
+            $progress_finished = get_string('progress_finished', 'local_learningplan');
+
             foreach ($sections as $section) {
                 $course = $DB->get_record('course', ['id' => $section->course]);
                 $course_section = $DB->get_record('course_sections', ['section' => $section->section, 'course' => $section->course]);
@@ -60,9 +65,9 @@ class index_page implements renderable, templatable
                     'section' => $section->section
                 ]);
 
-                $progress_offen = $section->state == 'offen';
-                $progress_in_bearbeitung = $section->state == 'in_bearbeitung';
-                $progress_abgeschlossen = $section->state == 'abgeschlossen';
+                $progress_open_selected = ($section->state == 'open') ? 'selected' : '';
+                $progress_in_progress_selected = ($section->state == 'in_progress') ? 'selected' : '';
+                $progress_finished_selected = ($section->state == 'finished') ? 'selected' : '';
 
                 $data[] = [
                     'userid' => $USER->id,
@@ -75,12 +80,30 @@ class index_page implements renderable, templatable
                     'addeddate' => date('d.m.Y', $section->timecreated),
                     'processing_deadline' => !empty($section->processing_deadline) ? date('Y-m-d', $section->processing_deadline) : '',
                     'progress' => $section->state,
-                    'progress_offen' => $progress_offen,
-                    'progress_in_bearbeitung' => $progress_in_bearbeitung,
-                    'progress_abgeschlossen' => $progress_abgeschlossen
+                    'progress_open_selected' => $progress_open_selected,
+                    'progress_in_progress_selected' => $progress_in_progress_selected,
+                    'progress_finished_selected' => $progress_finished_selected
                 ];
             }
-            return ['sections' => $data];
+            return [
+                'sections' => $data,
+                'progress_open' => $progress_open,
+                'progress_in_progress' => $progress_in_progress,
+                'progress_finished' => $progress_finished,
+                'searchfield' => get_string('searchfield', 'local_learningplan'),
+                'show_all' => get_string('show_all', 'local_learningplan'),
+                'table_course' => get_string('table_course', 'local_learningplan'),
+                'table_section' => get_string('table_section', 'local_learningplan'),
+                'table_created_at' => get_string('table_created_at', 'local_learningplan'),
+                'table_progress' => get_string('table_progress', 'local_learningplan'),
+                'table_deadline' => get_string('table_deadline', 'local_learningplan'),
+                'table_delete' => get_string('table_delete', 'local_learningplan'),
+                'table_no_entry_part_one' => get_string('table_no_entry_part_one', 'local_learningplan'),
+                'table_no_entry_part_two' => get_string('table_no_entry_part_two', 'local_learningplan'),
+                'table_no_entry_part_three' => get_string('table_no_entry_part_three', 'local_learningplan'),
+
+            ];
+
         } catch (dml_exception|moodle_exception $e) {
             error_log($e);
             return ['sections' => []];

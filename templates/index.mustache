@@ -22,25 +22,26 @@
 
     <!-- Suchfeld & Filter -->
     <div>
-        <input type="text" id="searchInput" placeholder="Suche...">
+ <input type="text" id="searchInput" placeholder="{{searchfield}}">
         <select id="filterSelect">
-            <option value="">Alle anzeigen</option>
-            <option value="Offen">Offen</option>
-            <option value="In Bearbeitung">In Bearbeitung</option>
-            <option value="Abgeschlossen">Abgeschlossen</option>
+            <option value="">{{show_all}}</option>
+            <option value="open">{{progress_open}}</option>
+            <option value="in_progress">{{progress_in_progress}}</option>
+            <option value="finished">{{progress_finished}}</option>
         </select>
+
     </div>
 
     <!-- Tabelle -->
     <table id="learningPlanTable">
         <thead>
         <tr>
-            <th data-column="coursename" class="sortable">Kurs</th>
-            <th data-column="sectionname" class="sortable">Abschnitt</th>
-            <th data-column="addeddate" class="sortable">Hinzugefügt</th>
-            <th data-column="processing_deadline" class="sortable">Bearbeiten bis</th>
-            <th data-column="progress" class="sortable">Bearbeitungsstand</th>
-            <th>Entfernen</th>
+            <th data-column="coursename" class="sortable">{{table_course}}</th>
+            <th data-column="sectionname" class="sortable">{{table_section}}</th>
+            <th data-column="addeddate" class="sortable">{{table_created_at}}</th>
+            <th data-column="processing_deadline" class="sortable">{{table_deadline}}</th>
+            <th data-column="progress" class="sortable">{{table_progress}}</th>
+            <th>{{table_delete}}</th>
         </tr>
         </thead>
         <tbody>
@@ -61,13 +62,17 @@
                             data-courseid="{{courseid}}"
                             data-sectionid="{{sectionid}}"
                             data-userid="{{userid}}">
-                        <option value="offen" {{#progress_offen}}selected{{/progress_offen}}>Offen</option>
-                        <option value="in_bearbeitung" {{#progress_in_bearbeitung}}selected{{/progress_in_bearbeitung}}>In Bearbeitung</option>
-                        <option value="abgeschlossen" {{#progress_abgeschlossen}}selected{{/progress_abgeschlossen}}>Abgeschlossen</option>
+                        <option value="open"
+                                {{#progress_open_selected}}selected{{/progress_open_selected}}>{{progress_open}}</option>
+                        <option value="in_progress"
+                                {{#progress_in_progress_selected}}selected{{/progress_in_progress_selected}}>{{progress_in_progress}}</option>
+                        <option value="finished"
+                                {{#progress_finished_selected}}selected{{/progress_finished_selected}}>{{progress_finished}}</option>
                     </select>
                 </td>
                 <td>
-                    <button class="btn btn-danger btn-sm remove-section-btn" data-courseid="{{courseid}}" data-sectionid="{{sectionid}}" data-userid="{{userid}}">
+                    <button class="btn btn-danger btn-sm remove-section-btn" data-courseid="{{courseid}}"
+                            data-sectionid="{{sectionid}}" data-userid="{{userid}}">
                         <i class="fa fa-trash"></i>
                     </button>
                 </td>
@@ -75,10 +80,10 @@
         {{/sections}}
         {{^sections}}
             <tr>
-                <td colspan="6" class="text-center">Du hast noch keine gespeicherten Lernbereiche. <br> Klicke in einem Kursabschnitt auf  <i class="icon fa-regular fa-bookmark"></i>um den Abschnitt zu deinem Lernplan hinzuzufügen.</td>
+                <td colspan="6" class="text-center">{{table_no_entry_part_one}} <br> {{table_no_entry_part_two}} <i class="icon fa-regular fa-bookmark"></i>{{table_no_entry_part_three}}
+                </td>
             </tr>
         {{/sections}}
         </tbody>
     </table>
-
 </div>
