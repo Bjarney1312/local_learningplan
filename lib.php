@@ -15,19 +15,26 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Central file that contains basic and reusable functions. Bundles functionalities such as database operations,
+ * interaction with other Moodle components, caching and general help functions.
  *
  * @package     local_greetings
- * @copyright   2024 Ivonne Kneißig <kneissig.ivonne@fh-swf.de>
+ * @copyright   2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /**
- * Insert a link to index.php on the site front page navigation menu.
+ * Adds a link to the Learning Plan plugin in the frontpage second navigation menu, visible only to logged-in users who
+ * are not guests.
  *
- * @param navigation_node $frontpage Node representing the front page in the navigation tree.
+ * This function is used to add a custom navigation link to the learningplan plugin on the Moodle site's frontpage.
+ * The link will only be displayed if the user is logged in and is not a guest user.
+ *
+ * @param navigation_node $frontpage The node representing the frontpage in the navigation tree.
+ * @throws coding_exception If there is an error adding the link to the navigation.
  */
-function local_learningplan_extend_navigation_frontpage(navigation_node $frontpage) {
+function local_learningplan_extend_navigation_frontpage(navigation_node $frontpage): void
+{
     if (isloggedin() && !isguestuser()) {
         $frontpage->add(
             get_string('pluginname', 'local_learningplan'),
@@ -37,7 +44,18 @@ function local_learningplan_extend_navigation_frontpage(navigation_node $frontpa
     }
 }
 
-function local_learningplan_extend_navigation(global_navigation $navigation) {
+/**
+ * Extends the global navigation with additional JavaScript functionality for the Learning Plan plugin.
+ *
+ * This function is used to include JavaScript functionality for the learningplan plugin in the global navigation.
+ * It checks if the user is logged in and not a guest, and then initializes JavaScript modules for navigation, buttons,
+ * and section menus, passing relevant data (such as the link URL and user ID) to these scripts.
+ *
+ * @param global_navigation $navigation The global navigation object.
+ * @throws coding_exception
+ */
+function local_learningplan_extend_navigation(global_navigation $navigation): void
+{
     global $PAGE;
     global $USER;
 

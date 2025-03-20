@@ -14,29 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
-namespace local_learningplan\output;
-
-use moodle_exception;
-use plugin_renderer_base;
-
 /**
- * Renderer for learningplan plugin.
+ * Plugin strings are defined here.
  *
- * @package     local_greetings
+ * @package     local_learningplan
+ * @category    string
  * @copyright   2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class renderer extends plugin_renderer_base {
 
-    /**
-     * Retrieves the data for the display and uses the Mustache template to generate an HTML page from it.
-     * Returns the rendered HTML string.
-     *
-     * @throws moodle_exception
-     */
-    public function render_index_page($page): string {
+defined('MOODLE_INTERNAL') || die();
 
-        $data = $page->export_for_template($this);
-        return parent::render_from_template('local_learningplan/index', $data);
-    }
-}
+$string['pluginname'] = 'Lernplan';
+$string['button_save_to_learningplan'] = 'Speichern';
+$string['button_delete_from_learningplan'] = 'Entfernen';
+$string['enablelearningplan'] = 'Lernplan aktivieren';
+

@@ -13,24 +13,34 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
- * Class index_page
+ * This class serves as a data source for the index page of the learningplan plugin.
  *
- * @package    local_greetings
- * @copyright  2024 YOUR NAME <your@email.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     local_greetings
+ * @copyright   2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace local_learningplan\output;
 
+use moodle_exception;
 use renderable;
 use templatable;
 use renderer_base;
 use dml_exception;
 use moodle_url;
 
-class index_page implements renderable, templatable {
-
-    public function export_for_template(renderer_base $output) {
+class index_page implements renderable, templatable
+{
+    /**
+     * Prepares the data for display in a Mustache template.
+     *
+     * @param renderer_base $output
+     * @return array[]
+     */
+    public function export_for_template(renderer_base $output): array
+    {
         global $DB, $USER;
 
         try {
@@ -43,19 +53,16 @@ class index_page implements renderable, templatable {
 
                 $sectionname = !empty($course_section->name) ? $course_section->name : get_section_name($course_section->course, $course_section);
 
-                // URL zum Kurs
                 $course_url = new moodle_url('/course/view.php', ['id' => $section->course]);
 
-                // URL zum Abschnitt innerhalb des Kurses
                 $section_url = new moodle_url('/course/view.php', [
                     'id' => $section->course,
                     'section' => $section->section
                 ]);
 
-
-                $progress_offen = ($section->state == 'offen') ? true : false;
-                $progress_in_bearbeitung = ($section->state == 'in_bearbeitung') ? true : false;
-                $progress_abgeschlossen = ($section->state == 'abgeschlossen') ? true : false;
+                $progress_offen = $section->state == 'offen';
+                $progress_in_bearbeitung = $section->state == 'in_bearbeitung';
+                $progress_abgeschlossen = $section->state == 'abgeschlossen';
 
                 $data[] = [
                     'userid' => $USER->id,
@@ -67,16 +74,15 @@ class index_page implements renderable, templatable {
                     'sectionurl' => $section_url->out(false),
                     'addeddate' => date('d.m.Y', $section->timecreated),
                     'processing_deadline' => !empty($section->processing_deadline) ? date('Y-m-d', $section->processing_deadline) : '',
-                    'progress' => $section->state,  // Aktueller Bearbeitungsstand
+                    'progress' => $section->state,
                     'progress_offen' => $progress_offen,
                     'progress_in_bearbeitung' => $progress_in_bearbeitung,
                     'progress_abgeschlossen' => $progress_abgeschlossen
                 ];
-
             }
-
             return ['sections' => $data];
-        } catch (dml_exception $e) {
+        } catch (dml_exception|moodle_exception $e) {
+            error_log($e);
             return ['sections' => []];
         }
     }

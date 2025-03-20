@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Index for learningplan plugin.
  *
  * @package     local_learningplan
- * @copyright   2024 Ivonne Kneißig <kneissig.ivonne@fh-swf.de>
+ * @copyright   2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once('../../config.php');
@@ -37,7 +37,6 @@ if (isguestuser()) {
 
 $PAGE->requires->js_call_amd('local_learningplan/learningplan', 'init');
 $PAGE->requires->css(new moodle_url('/local/learningplan/styles/learningplan.css'));
-
 
 $output = $PAGE->get_renderer('local_learningplan');
 echo $output->header();

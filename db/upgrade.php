@@ -15,19 +15,17 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
- *
- * @package     local_learningplan
- * @copyright   2024 Ivonne Moritz <moritz.ivonne@fh-swf.de>
- * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
-/**
  * Define upgrade steps to be performed to upgrade the plugin from the old version to the current one.
  *
+ * @package     local_greetings
+ * @copyright   2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
  * @param int $oldversion Version number the plugin is being upgraded from.
+ * @throws ddl_exception
  */
-function xmldb_local_learningplan_upgrade($oldversion) {
+function xmldb_local_learningplan_upgrade(int $oldversion): bool
+{
     global $DB;
     $dbman = $DB->get_manager();
 
@@ -53,7 +51,11 @@ function xmldb_local_learningplan_upgrade($oldversion) {
         $dbman->add_key($table, $key);
 
         // Learningplan savepoint reached.
-        upgrade_plugin_savepoint(true, 2025020413, 'local', 'learningplan');
+        try {
+            upgrade_plugin_savepoint(true, 2025020413, 'local', 'learningplan');
+        } catch (downgrade_exception|upgrade_exception|moodle_exception $e) {
+            error_log($e);
+        }
     }
 
     if ($oldversion < 2025020467) {
@@ -79,10 +81,13 @@ function xmldb_local_learningplan_upgrade($oldversion) {
         }
 
         // Learningplan savepoint reached.
-        upgrade_plugin_savepoint(true, 2025020467, 'local', 'learningplan');
+        try {
+            upgrade_plugin_savepoint(true, 2025020467, 'local', 'learningplan');
+        } catch (downgrade_exception|moodle_exception|upgrade_exception $e) {
+            error_log($e);
+        }
     }
-
-
     return true;
 }
+
 

@@ -19,14 +19,14 @@
  *
  * @package     local_learningplan
  * @category    string
- * @copyright   2025 Ivonne Moritz<moritz.ivonne@fh-swf.de>
+ * @copyright   2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Lernplan';
-$string['button_save_to_learningplan'] = 'Speichern';
-$string['button_delete_from_learningplan'] = 'Entfernen';
-$string['enablelearningplan'] = 'Zum Lernplan hinzufügbar';
+$string['pluginname'] = 'Learning Plan';
+$string['button_save_to_learningplan'] = 'Save';
+$string['button_delete_from_learningplan'] = 'Delete';
+$string['enablelearningplan'] = 'Activate learning plan';
 
