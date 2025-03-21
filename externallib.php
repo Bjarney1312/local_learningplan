@@ -291,7 +291,7 @@ class learningplan_service extends external_api
      */
     public static function update_deadline_returns(): external_value
     {
-        return new external_value(PARAM_BOOL, 'Status message');
+        return new external_value(PARAM_TEXT, 'Status message');
     }
 
     /**
@@ -359,7 +359,7 @@ class learningplan_service extends external_api
      */
     public static function update_progress_returns(): external_value
     {
-        return new external_value(PARAM_BOOL, 'Status message');
+        return new external_value(PARAM_TEXT, 'Status message');
     }
 
     /**
@@ -430,7 +430,7 @@ class learningplan_service extends external_api
      */
     public static function toggle_section_option_returns(): external_value
     {
-        return new external_value(PARAM_INT, 'Neuer Wert (0 oder 1)');
+        return new external_value(PARAM_INT, 'New value (0 or 1)');
     }
 
     /**

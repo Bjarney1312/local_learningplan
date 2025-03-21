@@ -42,7 +42,10 @@ $string['table_deadline'] = 'Bearbeiten bis';
 $string['table_delete'] = 'Entfernen';
 $string['table_no_entry_part_one'] = 'Du hast noch keine gespeicherten Lernbereiche.';
 $string['table_no_entry_part_two'] = 'Klicke in einem Kursabschnitt auf';
-$string['table_no_entry_part_three'] = 'um den Abschnitt zu deinem Lernplan hinzuzufügen. ';
+$string['table_no_entry_part_three'] = 'um den Abschnitt zu deinem Lernplan hinzuzufügen.';
+$string['learningplan_activate'] = 'Lernplan aktivieren';
+$string['learningplan_deactivate'] = 'Lernplan deaktivieren';
+
 
 
 

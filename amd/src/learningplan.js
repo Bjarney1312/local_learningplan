@@ -201,7 +201,6 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                     return cell.text().trim();
                 }
 
-
                 /**
                  * Updates the arrows in the column headings, depending on the sorting direction.
                  */

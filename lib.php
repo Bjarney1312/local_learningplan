@@ -61,8 +61,7 @@ function local_learningplan_extend_navigation(global_navigation $navigation): vo
 
     if (isloggedin() && !isguestuser()) {
         $PAGE->requires->js_call_amd('local_learningplan/navigation', 'init', [
-            'linkUrl'   => (new moodle_url('/moodle/local/learningplan/index.php'))->out_omit_querystring(),
-            'linkLabel' => get_string('pluginname', 'local_learningplan')
+            'linkUrl'   => (new moodle_url('/moodle/local/learningplan/index.php'))->out_omit_querystring()
         ]);
     }
 

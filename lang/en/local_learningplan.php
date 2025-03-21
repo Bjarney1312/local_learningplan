@@ -43,4 +43,8 @@ $string['table_delete'] = 'Delete';
 $string['table_no_entry_part_one'] = 'You do not yet have any saved learning areas.';
 $string['table_no_entry_part_two'] = 'In a course section, click on';
 $string['table_no_entry_part_three'] = 'to add the section to your learning plan.';
+$string['learningplan_activate'] = 'Activate learning plan';
+$string['learningplan_deactivate'] = 'Disable learning plan';
+
+
 
