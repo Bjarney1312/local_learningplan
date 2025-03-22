@@ -18,7 +18,7 @@
  * Central file that contains basic and reusable functions. Bundles functionalities such as database operations,
  * interaction with other Moodle components, caching and general help functions.
  *
- * @package     local_greetings
+ * @package     local_learningplan
  * @copyright   2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -33,8 +33,7 @@
  * @param navigation_node $frontpage The node representing the frontpage in the navigation tree.
  * @throws coding_exception If there is an error adding the link to the navigation.
  */
-function local_learningplan_extend_navigation_frontpage(navigation_node $frontpage): void
-{
+function local_learningplan_extend_navigation_frontpage(navigation_node $frontpage): void {
     if (isloggedin() && !isguestuser()) {
         $frontpage->add(
             get_string('pluginname', 'local_learningplan'),
@@ -54,14 +53,13 @@ function local_learningplan_extend_navigation_frontpage(navigation_node $frontpa
  * @param global_navigation $navigation The global navigation object.
  * @throws coding_exception
  */
-function local_learningplan_extend_navigation(global_navigation $navigation): void
-{
+function local_learningplan_extend_navigation(global_navigation $navigation): void {
     global $PAGE;
     global $USER;
 
     if (isloggedin() && !isguestuser()) {
         $PAGE->requires->js_call_amd('local_learningplan/navigation', 'init', [
-            'linkUrl'   => (new moodle_url('/moodle/local/learningplan/index.php'))->out_omit_querystring()
+            'linkUrl'   => (new moodle_url('/moodle/local/learningplan/index.php'))->out_omit_querystring(),
         ]);
 
         $navigation->add(

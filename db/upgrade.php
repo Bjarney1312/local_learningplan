@@ -17,15 +17,15 @@
 /**
  * Define upgrade steps to be performed to upgrade the plugin from the old version to the current one.
  *
- * @package     local_greetings
+ * @package     local_learningplan
  * @copyright   2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  * @param int $oldversion Version number the plugin is being upgraded from.
  * @throws ddl_exception
  */
-function xmldb_local_learningplan_upgrade(int $oldversion): bool
-{
+function xmldb_local_learningplan_upgrade (int $oldversion): bool {
+
     global $DB;
     $dbman = $DB->get_manager();
 
@@ -53,8 +53,8 @@ function xmldb_local_learningplan_upgrade(int $oldversion): bool
         // Learningplan savepoint reached.
         try {
             upgrade_plugin_savepoint(true, 2025020413, 'local', 'learningplan');
-        } catch (downgrade_exception|upgrade_exception|moodle_exception $e) {
-            error_log($e);
+        } catch (downgrade_exception | upgrade_exception | moodle_exception $e) {
+            debugging($e);
         }
     }
 
@@ -83,8 +83,8 @@ function xmldb_local_learningplan_upgrade(int $oldversion): bool
         // Learningplan savepoint reached.
         try {
             upgrade_plugin_savepoint(true, 2025020467, 'local', 'learningplan');
-        } catch (downgrade_exception|moodle_exception|upgrade_exception $e) {
-            error_log($e);
+        } catch (downgrade_exception | moodle_exception | upgrade_exception $e) {
+            debugging($e);
         }
     }
     return true;

@@ -16,8 +16,6 @@
 
 namespace local_learningplan\external;
 
-global $CFG;
-
 use dml_exception;
 use external_api;
 use external_function_parameters;
@@ -28,6 +26,7 @@ use stdClass;
 
 defined('MOODLE_INTERNAL') || die();
 
+global $CFG;
 require_once($CFG->libdir . '/externallib.php');
 
 /**
@@ -37,8 +36,7 @@ require_once($CFG->libdir . '/externallib.php');
  * @copyright   2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class learningplan_service extends external_api
-{
+class learningplan_service extends external_api {
     /**
      * Defines which parameters the web service function 'check_section_data' expects and specifies the data types of
      * the parameters. Also ensures automatic validation of the parameters before the actual web service function is
@@ -46,12 +44,11 @@ class learningplan_service extends external_api
      *
      * @return external_function_parameters
      */
-    public static function check_section_data_parameters(): external_function_parameters
-    {
+    public static function check_section_data_parameters(): external_function_parameters {
         return new external_function_parameters([
             'courseid' => new external_value(PARAM_INT, 'Course ID'),
             'sectionid' => new external_value(PARAM_INT, 'Section ID'),
-            'userid' => new external_value(PARAM_INT, 'User ID')
+            'userid' => new external_value(PARAM_INT, 'User ID'),
         ]);
     }
 
@@ -65,23 +62,20 @@ class learningplan_service extends external_api
      * @return bool Returns true if the record exists, false otherwise.
      * @throws dml_exception|invalid_parameter_exception If there is a database error.
      */
-    public static function check_section_data(int $courseid, int $sectionid, int $userid): bool
-    {
-        // Validierung der Eingabeparameter
+    public static function check_section_data(int $courseid, int $sectionid, int $userid): bool {
         $params = self::validate_parameters(self::check_section_data_parameters(), [
             'courseid' => $courseid,
             'sectionid' => $sectionid,
-            'userid' => $userid
+            'userid' => $userid,
         ]);
 
         global $DB;
 
         try {
-            // Überprüfen, ob der Datensatz in der Tabelle existiert
             return $DB->record_exists('local_learningplan', [
                 'course' => $params['courseid'],
                 'section' => $params['sectionid'],
-                'user' => $params['userid']
+                'user' => $params['userid'],
             ]);
         } catch (dml_exception $e) {
             throw new dml_exception('Error checking for record existence in the database', $e);
@@ -93,8 +87,7 @@ class learningplan_service extends external_api
      *
      * @return external_value A text string representing the existence status.
      */
-    public static function check_section_data_returns(): external_value
-    {
+    public static function check_section_data_returns(): external_value {
         return new external_value(PARAM_TEXT, 'Existence status');
     }
 
@@ -105,12 +98,11 @@ class learningplan_service extends external_api
      *
      * @return external_function_parameters
      */
-    public static function save_section_data_parameters(): external_function_parameters
-    {
+    public static function save_section_data_parameters(): external_function_parameters {
         return new external_function_parameters([
             'courseid' => new external_value(PARAM_INT, 'Course ID'),
             'sectionid' => new external_value(PARAM_INT, 'Section ID'),
-            'userid' => new external_value(PARAM_INT, 'User ID')
+            'userid' => new external_value(PARAM_INT, 'User ID'),
         ]);
     }
 
@@ -128,14 +120,13 @@ class learningplan_service extends external_api
      * @return string Returns 'success' if the record was successfully inserted.
      * @throws dml_exception|invalid_parameter_exception If an error occurs while inserting the record.
      */
-    public static function save_section_data(int $courseid, int $sectionid, int $userid): string
-    {
+    public static function save_section_data(int $courseid, int $sectionid, int $userid): string {
         global $DB;
 
         $params = self::validate_parameters(self::save_section_data_parameters(), [
             'courseid' => $courseid,
             'sectionid' => $sectionid,
-            'userid' => $userid
+            'userid' => $userid,
         ]);
 
         $record = new stdClass();
@@ -159,8 +150,7 @@ class learningplan_service extends external_api
      *
      * @return external_value A text string representing the existence status.
      */
-    public static function save_section_data_returns(): external_value
-    {
+    public static function save_section_data_returns(): external_value {
         return new external_value(PARAM_TEXT, 'Status message');
     }
 
@@ -171,12 +161,11 @@ class learningplan_service extends external_api
      *
      * @return external_function_parameters
      */
-    public static function delete_section_data_parameters(): external_function_parameters
-    {
+    public static function delete_section_data_parameters(): external_function_parameters {
         return new external_function_parameters([
             'courseid' => new external_value(PARAM_INT, 'Course ID'),
             'sectionid' => new external_value(PARAM_INT, 'Section ID'),
-            'userid' => new external_value(PARAM_INT, 'User ID')
+            'userid' => new external_value(PARAM_INT, 'User ID'),
         ]);
     }
 
@@ -190,20 +179,19 @@ class learningplan_service extends external_api
      * @return string Returns 'success' if the record was successfully deleted.
      * @throws dml_exception | invalid_parameter_exception  If an error occurs while deleting the record.
      */
-    public static function delete_section_data(int $courseid, int $sectionid, int $userid): string
-    {
+    public static function delete_section_data(int $courseid, int $sectionid, int $userid): string {
         global $DB;
 
         $params = self::validate_parameters(self::delete_section_data_parameters(), [
             'courseid' => $courseid,
             'sectionid' => $sectionid,
-            'userid' => $userid
+            'userid' => $userid,
         ]);
 
         $DB->delete_records('local_learningplan', [
             'course' => $params['courseid'],
             'section' => $params['sectionid'],
-            'user' => $params['userid']
+            'user' => $params['userid'],
         ]);
 
         return 'deleted';
@@ -214,8 +202,7 @@ class learningplan_service extends external_api
      *
      * @return external_value A text string representing the existence status.
      */
-    public static function delete_section_data_returns(): external_value
-    {
+    public static function delete_section_data_returns(): external_value {
         return new external_value(PARAM_TEXT, 'Status message');
     }
 
@@ -226,13 +213,12 @@ class learningplan_service extends external_api
      *
      * @return external_function_parameters
      */
-    public static function update_deadline_parameters(): external_function_parameters
-    {
+    public static function update_deadline_parameters(): external_function_parameters {
         return new external_function_parameters([
             'courseid' => new external_value(PARAM_INT, 'Course-ID'),
             'sectionid' => new external_value(PARAM_INT, 'Section-ID'),
             'userid' => new external_value(PARAM_INT, 'User-ID'),
-            'deadline' => new external_value(PARAM_RAW, 'New date in YYYY-MM-DD format')
+            'deadline' => new external_value(PARAM_RAW, 'New date in YYYY-MM-DD format'),
         ]);
     }
 
@@ -254,29 +240,27 @@ class learningplan_service extends external_api
      * @throws dml_exception If there is a database error.
      * @throws invalid_parameter_exception If invalid parameters are passed.
      */
-    public static function update_deadline(int $courseid, int $sectionid, int $userid, string $deadline): string
-    {
+    public static function update_deadline(int $courseid, int $sectionid, int $userid, string $deadline): string {
         global $DB;
 
         $params = self::validate_parameters(self::update_deadline_parameters(), [
             'courseid' => $courseid,
             'sectionid' => $sectionid,
             'userid' => $userid,
-            'deadline' => $deadline
+            'deadline' => $deadline,
         ]);
 
-        // Ensure the record exists
         $record = $DB->get_record('local_learningplan', [
             'course' => $params['courseid'],
             'section' => $params['sectionid'],
-            'user' => $params['userid']
+            'user' => $params['userid'],
         ]);
 
         if (!$record) {
             throw new moodle_exception('Entry not found');
         }
 
-        // Convert the deadline (YYYY-MM-DD) to a Unix timestamp
+        // Convert the deadline (YYYY-MM-DD) to a Unix timestamp.
         $record->processing_deadline = strtotime($params['deadline']);
 
         $DB->update_record('local_learningplan', $record);
@@ -289,8 +273,7 @@ class learningplan_service extends external_api
      *
      * @return external_value A text string representing the existence status.
      */
-    public static function update_deadline_returns(): external_value
-    {
+    public static function update_deadline_returns(): external_value {
         return new external_value(PARAM_TEXT, 'Status message');
     }
 
@@ -301,13 +284,12 @@ class learningplan_service extends external_api
      *
      * @return external_function_parameters
      */
-    public static function update_progress_parameters(): external_function_parameters
-    {
+    public static function update_progress_parameters(): external_function_parameters {
         return new external_function_parameters([
             'courseid' => new external_value(PARAM_INT, 'Course ID'),
             'sectionid' => new external_value(PARAM_INT, 'Section ID'),
             'userid' => new external_value(PARAM_INT, 'User ID'),
-            'progress' => new external_value(PARAM_ALPHANUMEXT, 'New progress state')
+            'progress' => new external_value(PARAM_ALPHANUMEXT, 'New progress state'),
         ]);
     }
 
@@ -325,21 +307,20 @@ class learningplan_service extends external_api
      * @return string A status message: 'success' if the deadline was updated, or an error message if something went wrong.
      * @throws moodle_exception If no matching record is found in the database.
      */
-    public static function update_progress(int $courseid, int $sectionid, int $userid, string $progress): string
-    {
+    public static function update_progress(int $courseid, int $sectionid, int $userid, string $progress): string {
         global $DB;
 
         $params = self::validate_parameters(self::update_progress_parameters(), [
             'courseid' => $courseid,
             'sectionid' => $sectionid,
             'userid' => $userid,
-            'progress' => $progress
+            'progress' => $progress,
         ]);
 
         $record = $DB->get_record('local_learningplan', [
             'course' => $params['courseid'],
             'section' => $params['sectionid'],
-            'user' => $params['userid']
+            'user' => $params['userid'],
         ]);
 
         if (!$record) {
@@ -357,8 +338,7 @@ class learningplan_service extends external_api
      *
      * @return external_value A text string representing the existence status.
      */
-    public static function update_progress_returns(): external_value
-    {
+    public static function update_progress_returns(): external_value {
         return new external_value(PARAM_TEXT, 'Status message');
     }
 
@@ -369,11 +349,10 @@ class learningplan_service extends external_api
      *
      * @return external_function_parameters
      */
-    public static function toggle_section_option_parameters(): external_function_parameters
-    {
+    public static function toggle_section_option_parameters(): external_function_parameters {
         return new external_function_parameters([
-            'sectionid' => new external_value(PARAM_INT, 'ID des Abschnitts'),
-            'courseid' => new external_value(PARAM_INT, 'ID des Kurses')
+            'sectionid' => new external_value(PARAM_INT, 'Section ID'),
+            'courseid' => new external_value(PARAM_INT, 'Course ID'),
         ]);
     }
 
@@ -392,13 +371,12 @@ class learningplan_service extends external_api
      * @throws dml_exception If there is a database error.
      * @throws invalid_parameter_exception If invalid parameters are passed.
      */
-    public static function toggle_section_option(int $sectionid, int $courseid): int
-    {
+    public static function toggle_section_option(int $sectionid, int $courseid): int {
         global $DB;
 
         self::validate_parameters(self::toggle_section_option_parameters(), [
             'sectionid' => $sectionid,
-            'courseid' => $courseid
+            'courseid' => $courseid,
         ]);
 
         $record = $DB->get_record('local_learningplan_options', [
@@ -409,15 +387,15 @@ class learningplan_service extends external_api
             $newvalue = $record->allow_learningplan == 1 ? 0 : 1;
             $DB->update_record('local_learningplan_options', [
                 'id' => $record->id,
-                'allow_learningplan' => $newvalue
+                'allow_learningplan' => $newvalue,
             ]);
         } else {
-            // Default value: 0
+            // Default value: 0.
             $newvalue = 0;
             $DB->insert_record('local_learningplan_options', [
                 'section' => $sectionid,
                 'course' => $courseid,
-                'allow_learningplan' => $newvalue
+                'allow_learningplan' => $newvalue,
             ]);
         }
         return $newvalue;
@@ -428,8 +406,7 @@ class learningplan_service extends external_api
      *
      * @return external_value A text string representing the existence status.
      */
-    public static function toggle_section_option_returns(): external_value
-    {
+    public static function toggle_section_option_returns(): external_value {
         return new external_value(PARAM_INT, 'New value (0 or 1)');
     }
 
@@ -440,8 +417,7 @@ class learningplan_service extends external_api
      *
      * @return external_function_parameters
      */
-    public static function get_section_option_parameters(): external_function_parameters
-    {
+    public static function get_section_option_parameters(): external_function_parameters {
         return self::toggle_section_option_parameters();
     }
 
@@ -459,18 +435,17 @@ class learningplan_service extends external_api
      * @throws dml_exception If there is a database error.
      * @throws invalid_parameter_exception If invalid parameters are passed.
      */
-    public static function get_section_option(int $sectionid, int $courseid): int
-    {
+    public static function get_section_option(int $sectionid, int $courseid): int {
         global $DB;
 
         self::validate_parameters(self::toggle_section_option_parameters(), [
             'sectionid' => $sectionid,
-            'courseid' => $courseid
+            'courseid' => $courseid,
         ]);
 
         $record = $DB->get_record('local_learningplan_options', ['section' => $sectionid, 'course' => $courseid]);
 
-        return $record ? $record->allow_learningplan : 1; // Default value 1, if not presend
+        return $record ? $record->allow_learningplan : 1; // Default value 1, if not present.
     }
 
     /**
@@ -478,8 +453,7 @@ class learningplan_service extends external_api
      *
      * @return external_value A text string representing the existence status.
      */
-    public static function get_section_option_returns(): external_value
-    {
+    public static function get_section_option_returns(): external_value {
         return new external_value(PARAM_INT, 'Value 0 or 1');
     }
 
@@ -490,8 +464,7 @@ class learningplan_service extends external_api
      *
      * @return external_function_parameters
      */
-    public static function delete_section_data_for_all_parameters(): external_function_parameters
-    {
+    public static function delete_section_data_for_all_parameters(): external_function_parameters {
         return new external_function_parameters([
             'courseid' => new external_value(PARAM_INT, 'Course ID'),
             'sectionid' => new external_value(PARAM_INT, 'Section ID'),
@@ -511,13 +484,12 @@ class learningplan_service extends external_api
      * @return string A status message indicating that the deletion has occurred ('deleted').
      * @throws dml_exception|invalid_parameter_exception If an error occurs during the deletion process.
      */
-    public static function delete_section_data_for_all(int $courseid, int $sectionid): string
-    {
+    public static function delete_section_data_for_all(int $courseid, int $sectionid): string {
         global $DB;
 
         self::validate_parameters(self::delete_section_data_for_all_parameters(), [
             'sectionid' => $sectionid,
-            'courseid' => $courseid
+            'courseid' => $courseid,
         ]);
 
         $DB->delete_records('local_learningplan', [
@@ -533,8 +505,7 @@ class learningplan_service extends external_api
      *
      * @return external_value A text string representing the existence status.
      */
-    public static function delete_section_data_for_all_returns(): external_value
-    {
+    public static function delete_section_data_for_all_returns(): external_value {
         return new external_value(PARAM_TEXT, 'Status message');
     }
 }

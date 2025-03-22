@@ -25,26 +25,27 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Learning Plan';
-$string['button_save_to_learningplan'] = 'Save';
 $string['button_delete_from_learningplan'] = 'Delete';
+$string['button_save_to_learningplan'] = 'Save';
 $string['enablelearningplan'] = 'Activate learning plan';
-$string['progress_open'] = 'Open';
-$string['progress_in_progress'] = 'In progress';
+$string['learningplan_activate'] = 'Activate learning plan';
+$string['learningplan_deactivate'] = 'Disable learning plan';
+$string['pluginname'] = 'Learning Plan';
 $string['progress_finished'] = 'Finished';
+$string['progress_in_progress'] = 'In progress';
+$string['progress_open'] = 'Open';
 $string['searchfield'] = 'Search...';
 $string['show_all'] = 'Show all';
 $string['table_course'] = 'Course';
-$string['table_section'] = 'Section';
 $string['table_created_at'] = 'Added on';
-$string['table_progress'] = 'Status';
 $string['table_deadline'] = 'Deadline';
 $string['table_delete'] = 'Delete';
 $string['table_no_entry_part_one'] = 'You do not yet have any saved learning areas.';
-$string['table_no_entry_part_two'] = 'In a course section, click on';
 $string['table_no_entry_part_three'] = 'to add the section to your learning plan.';
-$string['learningplan_activate'] = 'Activate learning plan';
-$string['learningplan_deactivate'] = 'Disable learning plan';
+$string['table_no_entry_part_two'] = 'In a course section, click on';
+$string['table_progress'] = 'Status';
+$string['table_section'] = 'Section';
+
 
 
 

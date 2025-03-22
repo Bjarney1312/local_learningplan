@@ -25,26 +25,27 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Lernplan';
-$string['button_save_to_learningplan'] = 'Speichern';
 $string['button_delete_from_learningplan'] = 'Entfernen';
+$string['button_save_to_learningplan'] = 'Speichern';
 $string['enablelearningplan'] = 'Lernplan aktivieren';
-$string['progress_open'] = 'Offen';
-$string['progress_in_progress'] = 'In Bearbeitung';
+$string['learningplan_activate'] = 'Lernplan aktivieren';
+$string['learningplan_deactivate'] = 'Lernplan deaktivieren';
+$string['pluginname'] = 'Lernplan';
 $string['progress_finished'] = 'Abgeschlossen';
+$string['progress_in_progress'] = 'In Bearbeitung';
+$string['progress_open'] = 'Offen';
 $string['searchfield'] = 'Suche...';
 $string['show_all'] = 'Alle anzeigen';
 $string['table_course'] = 'Kurs';
-$string['table_section'] = 'Abschnitt';
 $string['table_created_at'] = 'Hinzugefügt';
-$string['table_progress'] = 'Bearbeitungsstand';
 $string['table_deadline'] = 'Bearbeiten bis';
 $string['table_delete'] = 'Entfernen';
 $string['table_no_entry_part_one'] = 'Du hast noch keine gespeicherten Lernbereiche.';
-$string['table_no_entry_part_two'] = 'Klicke in einem Kursabschnitt auf';
 $string['table_no_entry_part_three'] = 'um den Abschnitt zu deinem Lernplan hinzuzufügen.';
-$string['learningplan_activate'] = 'Lernplan aktivieren';
-$string['learningplan_deactivate'] = 'Lernplan deaktivieren';
+$string['table_no_entry_part_two'] = 'Klicke in einem Kursabschnitt auf';
+$string['table_progress'] = 'Bearbeitungsstand';
+$string['table_section'] = 'Abschnitt';
+
 
 
 

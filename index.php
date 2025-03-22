@@ -21,6 +21,7 @@
  * @copyright   2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require_once('../../config.php');
 require_once($CFG->dirroot . '/local/learningplan/lib.php');
 $context = context_system::instance();

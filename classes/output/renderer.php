@@ -22,7 +22,7 @@ use plugin_renderer_base;
 /**
  * Renderer for learningplan plugin.
  *
- * @package     local_greetings
+ * @package     local_learningplan
  * @copyright   2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
