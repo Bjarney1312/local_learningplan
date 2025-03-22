@@ -29,7 +29,13 @@ define(['jquery', 'core/ajax'], function($, ajax) {
                                 .attr('data-section-id', sectionId)
                                 .attr('data-course-id', courseId)
                                 .attr('data-user-id', userId)
-                                .html('<i class="icon fa-regular fa-bookmark"></i>');
+                                .html('<i class="icon fa-regular fa-bookmark"></i>')
+                                .css({
+                                    'border-color': 'transparent',
+                                    'margin-right': '5px',
+                                    'height': '40px',
+                                    'width': '40px',
+                                });
 
                             ajax.call([{
                                 methodname: 'local_learningplan_check_section_data',

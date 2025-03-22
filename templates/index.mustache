@@ -34,14 +34,14 @@
 
     <!-- Tabelle -->
     <table id="learningPlanTable">
-        <thead>
+        <thead class="bg-primary">
         <tr>
-            <th data-column="coursename" class="sortable">{{table_course}}</th>
-            <th data-column="sectionname" class="sortable">{{table_section}}</th>
-            <th data-column="addeddate" class="sortable">{{table_created_at}}</th>
-            <th data-column="processing_deadline" class="sortable">{{table_deadline}}</th>
-            <th data-column="progress" class="sortable">{{table_progress}}</th>
-            <th>{{table_delete}}</th>
+            <th data-column="coursename" class="sortable bg-primary">{{table_course}}</th>
+            <th data-column="sectionname" class="sortable bg-primary">{{table_section}}</th>
+            <th data-column="addeddate" class="sortable bg-primary">{{table_created_at}}</th>
+            <th data-column="processing_deadline" class="sortable bg-primary">{{table_deadline}}</th>
+            <th data-column="progress" class="sortable bg-primary">{{table_progress}}</th>
+            <th class="bg-primary">{{table_delete}}</th>
         </tr>
         </thead>
         <tbody>
@@ -71,10 +71,13 @@
                     </select>
                 </td>
                 <td>
-                    <button class="btn btn-danger btn-sm remove-section-btn" data-courseid="{{courseid}}"
-                            data-sectionid="{{sectionid}}" data-userid="{{userid}}">
-                        <i class="fa fa-trash"></i>
-                    </button>
+                    <div class="td-remove">
+                        <button class="btn btn-danger btn-sm remove-section-btn" data-courseid="{{courseid}}"
+                                data-sectionid="{{sectionid}}" data-userid="{{userid}}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+
                 </td>
             </tr>
         {{/sections}}

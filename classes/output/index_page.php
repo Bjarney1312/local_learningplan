@@ -14,14 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * This class serves as a data source for the index page of the learningplan plugin.
- *
- * @package     local_greetings
- * @copyright   2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
- * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 namespace local_learningplan\output;
 
 use moodle_exception;
@@ -31,16 +23,21 @@ use renderer_base;
 use dml_exception;
 use moodle_url;
 
-class index_page implements renderable, templatable
-{
+/**
+ * This class serves as a data source for the index page of the learningplan plugin.
+ *
+ * @package     local_learningplan
+ * @copyright   2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class index_page implements renderable, templatable {
     /**
      * Prepares the data for display in a Mustache template.
      *
      * @param renderer_base $output
      * @return array[]
      */
-    public function export_for_template(renderer_base $output): array
-    {
+    public function export_for_template(renderer_base $output): array {
         global $DB, $USER;
 
         try {

@@ -1,0 +1,32 @@
+#searchInput,
+#filterSelect,
+.progress-dropdown,
+.datepicker {
+    height: 45px;
+}
+
+#learningPlanTable th.sortable::after {
+    color: white;
+
+}
+
+
+#learningPlanTable th.sortable:hover::after {
+    color: white;
+}
+
+.remove-section-btn {
+    color: #fff;
+    background-color: var(--danger);
+    height: 45px;
+    width: 45px;
+    border: none;
+    border-radius: 30px;
+}
+
+.td-remove {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}

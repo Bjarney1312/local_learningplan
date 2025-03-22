@@ -63,6 +63,12 @@ function local_learningplan_extend_navigation(global_navigation $navigation): vo
         $PAGE->requires->js_call_amd('local_learningplan/navigation', 'init', [
             'linkUrl'   => (new moodle_url('/moodle/local/learningplan/index.php'))->out_omit_querystring()
         ]);
+
+        $navigation->add(
+            get_string('pluginname', 'local_learningplan'),
+            new moodle_url('/local/learningplan/index.php'),
+            navigation_node::TYPE_CUSTOM,
+        );
     }
 
     $PAGE->requires->js_call_amd('local_learningplan/button', 'init', ['userid' => $USER->id]);
