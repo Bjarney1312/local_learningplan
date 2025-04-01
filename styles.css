@@ -3,18 +3,111 @@
 .progress-dropdown,
 .datepicker {
     height: 45px;
+    background-color: #fff;
 }
 
+/* Searchfield */
+#searchInput,
+#filterSelect {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#searchInput:focus,
+#filterSelect:focus {
+    border-color: var(--secondary);
+    outline: none;
+}
+
+/* Dropdown-menu for progress */
+.progress-dropdown {
+    padding: 6px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.progress-dropdown:focus {
+    border-color: var(--secondary);
+    outline: none;
+}
+
+/* Datepicker */
+.datepicker {
+    padding: 6px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.datepicker:focus {
+    border-color: var(--secondary);
+    outline: none;
+}
+
+#learningPlanTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#learningPlanTable th,
+#learningPlanTable td {
+    padding: 12px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #e1e1e1;
+    font-size: 14px;
+}
+
+/* Table head */
+#learningPlanTable th {
+    color: #fff;
+    font-weight: bold;
+}
+
+#learningPlanTable tbody tr:hover {
+    background-color: #efefef;
+}
+
+/* Sortable columns */
+#learningPlanTable th.sortable {
+    cursor: pointer;
+    position: relative;
+    padding-right: 20px;
+}
+
+/* Sorting arrows */
 #learningPlanTable th.sortable::after {
+    content: '▼';
+    font-size: 12px;
     color: white;
-
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.3s ease-in-out;
 }
 
+/* Sorting asc */
+#learningPlanTable th.sortable.sorted-asc::after {
+    content: '▲';
+}
+
+/* Sorting desc */
+#learningPlanTable th.sortable.sorted-desc::after {
+    content: '▼';
+}
 
 #learningPlanTable th.sortable:hover::after {
     color: white;
 }
 
+/* Remove button */
 .remove-section-btn {
     color: #fff;
     background-color: var(--danger);
@@ -30,3 +123,4 @@
     align-items: center;
     height: 100%;
 }
+

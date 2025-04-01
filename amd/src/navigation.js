@@ -1,7 +1,7 @@
 define(['jquery', 'core/str'], function($, str) {
     return {
         init: function(params) {
-            let linkUrl = params.linkUrl || '/moodle/local/learningplan/index.php';
+            let linkUrl = params;
             str.get_string('pluginname', 'local_learningplan').done(function(linkLabel) {
 
                 /**
