@@ -1,8 +1,20 @@
 # Lernplan #
 
-TODO Describe the plugin shortly here.
+A Moodle plugin for managing personalized learning plans for students. Course sections can be added per user, assigned deadlines, and marked with progress statuses. Includes filtering, searching, and sorting features for better overview.
 
-TODO Provide more detailed description here.
+🔧 Features:
+
+    Add course sections to a personal learning plan
+
+    Set progress status (open, in progress, completed)
+
+    Assign individual deadlines
+
+    Filter, search, and sort sections
+
+📎 Compatible with Moodle 4.5
+📁 Plugin type: local
+📌 Designed for individual learning organization
 
 ## Installing via uploaded ZIP file ##
 
@@ -29,7 +41,7 @@ to complete the installation from the command line.
 
 ## License ##
 
-2025 Ivonne Moritz<moritz.ivonne@fh-swf.de>
+2025 Ivonne Moritz <moritz.ivonne@fh-swf.de>
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
